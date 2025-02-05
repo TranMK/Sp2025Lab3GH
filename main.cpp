@@ -3,10 +3,9 @@
 #include "heaplotlittle.hpp"
 
 int main(void) {
-  Measurement m = Measurement(230);
-  std::cout << m.get_heaps() << std::endl;
-  std::cout << m.get_lots() << std::endl;
-  std::cout << m.get_littles() << std::endl;
+  Measurement m_1 = Measurement(230);
+  Measurement m_2 = Measurement(1, 9, 6);
+  std::cout << (m_1 == m_2) << std::endl;
 
   return 0;
 }
