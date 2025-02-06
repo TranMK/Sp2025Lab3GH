@@ -17,9 +17,18 @@ public:
   double get_littles() { return littles; }
 
   // Setters.
-  void set_heaps(double heaps) { this->heaps = heaps; }
-  void set_lots(double lots) { this->lots = lots; }
-  void set_littles(double littles) { this->littles = littles; }
+  void set_heaps(double heaps) {
+    this->heaps = heaps;
+    this->rebalance();
+  }
+  void set_lots(double lots) {
+    this->lots = lots;
+    this->rebalance();
+  }
+  void set_littles(double littles) {
+    this->littles = littles;
+    this->rebalance();
+  }
 
   // Overloads.
   void operator+(Measurement other);
@@ -31,4 +40,5 @@ public:
   // Convenience.
   std::string to_str();
   void rebalance();
+  double to_meters();
 };
