@@ -1,6 +1,12 @@
 #include <iostream>
 
+#include "heaplotlittle.hpp"
+
 int main(void) {
-  std::cout << "HELLO WORLD";
+  Measurement m_1 = Measurement(161);
+  std::cout << m_1.to_str() << std::endl;
+  m_1.set_littles(161);
+  std::cout << m_1.to_str() << std::endl;
+
   return 0;
 }
