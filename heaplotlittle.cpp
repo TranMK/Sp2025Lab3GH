@@ -1,5 +1,5 @@
 #include <cmath>
-#include <sstream>
+#include <iostream>
 
 #include "heaplotlittle.hpp"
 
@@ -74,12 +74,11 @@ bool Measurement::operator==(Measurement other) {
          (littles == other.littles);
 };
 
-std::string Measurement::to_str() {
-  std::stringstream ss;
-  ss << "HEAPS: " << heaps << std::endl;
-  ss << "LOTS: " << lots << std::endl;
-  ss << "LITTLES: " << littles << std::endl;
-  return ss.str();
+std::ostream& operator<<(std::ostream& os, Measurement& self) {
+  os << "HEAPS: " << self.get_heaps() << std::endl;
+os << "LOTS: " << self.get_lots() << std::endl;
+  os << "LITTLES: " << self.get_littles() << std::endl;
+  return os;
 }
 
 void Measurement::rebalance() {
