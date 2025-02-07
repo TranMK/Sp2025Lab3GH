@@ -39,7 +39,7 @@ public:
   bool operator==(Measurement other);
 
   // Convenience.
-  std::string to_str();
+  friend std::ostream& operator<<(std::ostream& os, Measurement& self);
   void rebalance();
   double to_meters();
 };
