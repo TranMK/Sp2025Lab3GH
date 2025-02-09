@@ -33,7 +33,7 @@ void Measurement::operator-(Measurement other) {
               << std::endl;
     return;
   } else {
-    //total_littles -= other.to_littles();
+    // total_littles -= other.to_littles();
     littles = total_littles - other.to_littles();
     this->rebalance();
     return;
@@ -69,20 +69,18 @@ std::ostream &operator<<(std::ostream &os, Measurement &self) {
 }
 
 void Measurement::rebalance() {
-  heaps=0;
-  lots=0;
-  std::cout << "before: " << heaps << " " << lots << " " << littles << std::endl;
+  heaps = 0;
+  lots = 0;
+
   // Lots.
   double littles_as_lots = littles / 7.;
   lots = std::floor(littles_as_lots);
   littles -= lots * 7.;
-  std::cout << "after lots: " <<  heaps << " " << lots << " " << littles << std::endl;
 
   // Heaps.
   size_t lots_as_heaps = lots / 23.;
   heaps = std::floor(lots_as_heaps);
   lots -= heaps * 23;
-  std::cout << "after heaps: " << heaps << " " << lots << " " << littles << std::endl;
 }
 
 double Measurement::to_meters() {
@@ -91,7 +89,8 @@ double Measurement::to_meters() {
   return total_meters;
 }
 
-double Measurement::to_littles(){
-  double total_littles = (get_heaps() * 23 * 7) + (get_lots() * 7) + get_littles();
+double Measurement::to_littles() {
+  double total_littles =
+      (get_heaps() * 23 * 7) + (get_lots() * 7) + get_littles();
   return total_littles;
 }
