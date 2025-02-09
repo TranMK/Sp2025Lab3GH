@@ -1,6 +1,10 @@
+#include <cmath>
 #include <iostream>
 
 #include "heaplotlittle.hpp"
+#include "utility.cpp"
+
+const double little_to_meter = 1.;
 
 Measurement::Measurement() {
   heaps = 0;
@@ -8,87 +12,83 @@ Measurement::Measurement() {
   littles = 0;
 }
 
-Measurement::Measurement(const size_t heaps, const size_t lots,
-                         const size_t littles)
+Measurement::Measurement(const double heaps, const double lots,
+                         const double littles)
     : heaps(heaps), lots(lots), littles(littles) {
+  this->littles = to_littles();
   this->rebalance();
 }
 
-Measurement::Measurement(const size_t littles) {
-  size_t leftover_littles = littles;
-  // Heaps.
-  size_t total_heap_count = leftover_littles / (23. * 7.);
-  heaps = total_heap_count;
-  leftover_littles -= total_heap_count * 23 * 7;
-
-  // Lots.
-  size_t total_lots_count = leftover_littles / 7.;
-  lots = total_lots_count;
-  leftover_littles -= total_lots_count * 7;
-
-  // Littles.
-  this->littles = leftover_littles;
-
+Measurement::Measurement(const double littles) {
+  this->littles = littles;
   this->rebalance();
 }
 
 void Measurement::operator+(Measurement other) {
-  heaps = this->heaps + other.heaps;
-  lots = this->lots + other.lots;
-  littles = this->littles + other.littles;
-
+  littles = to_littles() + other.to_littles();
   this->rebalance();
 };
 
 void Measurement::operator-(Measurement other) {
-  heaps = this->heaps - other.heaps;
-  lots = this->lots - other.lots;
-  littles = this->littles - other.littles;
+  double total_littles = to_littles();
+  if (total_littles < other.to_littles()) {
+    std::cout << "Subtraction operation would result in a negative distance."
+              << std::endl;
+    return;
+  }
+
+  littles = total_littles - other.littles;
 
   this->rebalance();
 };
 
 void Measurement::operator*(Measurement other) {
-  heaps = this->heaps * other.heaps;
-  lots = this->lots * other.lots;
-  littles = this->littles * other.littles;
-
+  littles = to_littles() * other.to_littles();
   this->rebalance();
 };
 
 void Measurement::operator/(Measurement other) {
-  heaps = this->heaps / other.heaps;
-  lots = this->lots / other.lots;
-  littles = this->littles / other.littles;
+  if (other.to_littles() == 0) {
+    std::cout << "Divider is 0." << std::endl;
+    return;
+  }
 
+  littles = to_littles() / other.to_littles();
   this->rebalance();
 };
 
 bool Measurement::operator==(Measurement other) {
-  return (heaps == other.heaps) && (lots == other.lots) &&
-         (littles == other.littles);
+  return (doubles_equal(heaps, other.heaps)) &&
+         (doubles_equal(lots, other.lots)) &&
+         (doubles_equal(littles, other.littles));
 };
 
 std::ostream &operator<<(std::ostream &os, Measurement &self) {
-  os << "HEAPS: " << self.get_heaps() << std::endl;
-  os << "LOTS: " << self.get_lots() << std::endl;
-  os << "LITTLES: " << self.get_littles() << std::endl;
+  os << "Heaps: " << self.get_heaps() << std::endl;
+  os << "Lots: " << self.get_lots() << std::endl;
+  os << "Littles: " << self.get_littles() << std::endl;
   return os;
 }
 
 void Measurement::rebalance() {
   // Lots.
-  size_t lots_from_littles = littles / 7;
-  lots += lots_from_littles;
-  littles -= lots_from_littles * 7;
+  double littles_as_lots = littles / 7;
+  lots = int(littles_as_lots);
+  littles -= lots * 7.;
 
   // Heaps.
-  size_t heaps_from_littles = littles / (23 * 7);
-  littles -= heaps_from_littles * 23 * 7;
-  heaps += heaps_from_littles;
-  size_t heaps_from_lots = lots / 23;
-  lots -= heaps_from_lots * 23;
-  heaps += heaps_from_lots;
+  size_t lots_as_heaps = lots / 23;
+  heaps = int(lots_as_heaps);
+  lots -= heaps * 23;
 }
 
-size_t Measurement::to_meters() { return 0; }
+double Measurement::to_meters() {
+  double total_littles = heaps * 23 * 7 + lots * 7;
+  double total_meters = total_littles * little_to_meter;
+  return total_meters;
+}
+
+double Measurement::to_littles() {
+  double total_littles = (heaps * 23 * 7) + (lots * 7) + littles;
+  return total_littles;
+}

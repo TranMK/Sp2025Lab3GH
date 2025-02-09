@@ -21,4 +21,5 @@ Additional procedures that weren't required by the assignment:
   - `Measurement::to_str()`: returns a string (from a stream) that prints out the measurement's quantities line by line.
   - `Measurement::rebalance()`: rebalances the quantities if each of them (minus the heaps) can be "compacted".
 
- 
+## Assumptions
+1. A `little` is equal to 0.01 meters.

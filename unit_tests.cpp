@@ -7,8 +7,8 @@ bool test_1();
 bool test_2();
 
 std::vector<std::tuple<size_t, bool>> run() {
-  // Custom unit tests.
   std::vector<std::tuple<size_t, bool>> passes(2, {false, 1});
+  // Custom unit tests.
   passes[0] = {test_1(), 1};
   passes[1] = {test_2(), 2};
 
@@ -17,10 +17,10 @@ std::vector<std::tuple<size_t, bool>> run() {
 
 // Addition.
 bool test_1() {
-  auto m_1 = Measurement(162);
-  auto m_2 = Measurement(0, 0, 6);
-  m_1 + m_2; // Assigns to `m_1`
-  auto expected = Measurement(1, 1, 0);
+  auto m_1 = Measurement(162); // 1, 0, 1
+  auto m_2 = Measurement(0, 0, 6); // 0, 0, 6
+  m_1 + m_2; // Assigns to `m_1` = 1, 0, 7
+  auto expected = Measurement(1, 1, 0); // 1, 1, 0
 
   return m_1 == expected;
 }
