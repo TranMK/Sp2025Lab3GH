@@ -32,11 +32,13 @@ void Measurement::operator-(Measurement other) {
     std::cout << "Subtraction operation would result in a negative distance."
               << std::endl;
     return;
+  } else {
+    //total_littles -= other.to_littles();
+    littles = total_littles - other.to_littles();
+    this->rebalance();
+    return;
   }
-
-  littles = total_littles - other.littles;
-  this->rebalance();
-};
+}
 
 void Measurement::operator*(Measurement other) {
   littles = to_littles() * other.to_littles();
@@ -67,6 +69,8 @@ std::ostream &operator<<(std::ostream &os, Measurement &self) {
 }
 
 void Measurement::rebalance() {
+  heaps=0;
+  lots=0;
   std::cout << "before: " << heaps << " " << lots << " " << littles << std::endl;
   // Lots.
   double littles_as_lots = littles / 7.;
@@ -87,7 +91,7 @@ double Measurement::to_meters() {
   return total_meters;
 }
 
-double Measurement::to_littles() {
-  double total_littles = (heaps * 23 * 7) + (lots * 7) + littles;
+double Measurement::to_littles(){
+  double total_littles = (get_heaps() * 23 * 7) + (get_lots() * 7) + get_littles();
   return total_littles;
 }

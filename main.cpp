@@ -44,12 +44,16 @@ int main(int argc, char *argv[]) {
     switch (operation) {
     case 1:
       result + m_y;
+      break;
     case 2:
       result - m_y;
+      break;
     case 3:
       result *m_y;
+      break;
     case 4:
       result / m_y;
+      break;
     }
 
     if (operation != 1 && operation != 2 && operation != 3 && operation != 4)
