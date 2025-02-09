@@ -1,32 +1,33 @@
-#include <string>
+#include <cstddef>
+#include <ostream>
 
 class Measurement {
 private:
-  double heaps;
-  double lots;
-  double littles;
+  size_t heaps;
+  size_t lots;
+  size_t littles;
 
 public:
   // Constructors.
   Measurement();
-  Measurement(double heaps, double lots, double littles);
-  Measurement(double littles);
+  Measurement(size_t heaps, size_t lots, size_t littles);
+  Measurement(size_t littles);
 
   // Getters.
-  double get_heaps() { return heaps; }
-  double get_lots() { return lots; }
-  double get_littles() { return littles; }
+  size_t get_heaps() { return heaps; }
+  size_t get_lots() { return lots; }
+  size_t get_littles() { return littles; }
 
   // Setters.
-  void set_heaps(double heaps) {
+  void set_heaps(size_t heaps) {
     this->heaps = heaps;
     this->rebalance();
   }
-  void set_lots(double lots) {
+  void set_lots(size_t lots) {
     this->lots = lots;
     this->rebalance();
   }
-  void set_littles(double littles) {
+  void set_littles(size_t littles) {
     this->littles = littles;
     this->rebalance();
   }
@@ -39,7 +40,7 @@ public:
   bool operator==(Measurement other);
 
   // Convenience.
-  friend std::ostream& operator<<(std::ostream& os, Measurement& self);
+  friend std::ostream &operator<<(std::ostream &os, Measurement &self);
   void rebalance();
-  double to_meters();
+  size_t to_meters();
 };

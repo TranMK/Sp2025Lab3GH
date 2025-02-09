@@ -1,4 +1,3 @@
-#include <cmath>
 #include <iostream>
 
 #include "heaplotlittle.hpp"
@@ -9,30 +8,26 @@ Measurement::Measurement() {
   littles = 0;
 }
 
-Measurement::Measurement(const double heaps, const double lots,
-                         const double littles)
+Measurement::Measurement(const size_t heaps, const size_t lots,
+                         const size_t littles)
     : heaps(heaps), lots(lots), littles(littles) {
   this->rebalance();
 }
 
-Measurement::Measurement(const double littles) {
+Measurement::Measurement(const size_t littles) {
+  size_t leftover_littles = littles;
   // Heaps.
-  double total_heap_count = littles / (23. * 7.);
-  double heap_count, leftover_heap;
-  leftover_heap = std::modf(total_heap_count, &heap_count);
-  heaps = heap_count;
+  size_t total_heap_count = leftover_littles / (23. * 7.);
+  heaps = total_heap_count;
+  leftover_littles -= total_heap_count * 23 * 7;
 
   // Lots.
-  double total_littles_leftover_after_heaps = leftover_heap * 23. * 7.;
-  double total_lots_count = total_littles_leftover_after_heaps / 7.;
-  double lots_count, leftover_lots;
-  leftover_lots = std::modf(total_lots_count, &lots_count);
-  lots = lots_count;
+  size_t total_lots_count = leftover_littles / 7.;
+  lots = total_lots_count;
+  leftover_littles -= total_lots_count * 7;
 
   // Littles.
-  double total_littles_leftover_after_lots = leftover_lots * 7.;
-  /* for no namespace "collisions" */ this->littles =
-      std::roundf(total_littles_leftover_after_lots);
+  this->littles = leftover_littles;
 
   this->rebalance();
 }
@@ -74,26 +69,26 @@ bool Measurement::operator==(Measurement other) {
          (littles == other.littles);
 };
 
-std::ostream& operator<<(std::ostream& os, Measurement& self) {
+std::ostream &operator<<(std::ostream &os, Measurement &self) {
   os << "HEAPS: " << self.get_heaps() << std::endl;
-os << "LOTS: " << self.get_lots() << std::endl;
+  os << "LOTS: " << self.get_lots() << std::endl;
   os << "LITTLES: " << self.get_littles() << std::endl;
   return os;
 }
 
 void Measurement::rebalance() {
-  double lots_from_littles;
-  double leftover_littles =
-      std::modf(/* lots */ littles / 7, &lots_from_littles);
+  // Lots.
+  size_t lots_from_littles = littles / 7;
   lots += lots_from_littles;
-  double total_littles_after_lots_extraction = leftover_littles * 7;
-  littles = total_littles_after_lots_extraction;
+  littles -= lots_from_littles * 7;
 
-  double heaps_from_lots;
-  double leftover_lots = std::modf(/* heaps */ lots / 23, &heaps_from_lots);
+  // Heaps.
+  size_t heaps_from_littles = littles / (23 * 7);
+  littles -= heaps_from_littles * 23 * 7;
+  heaps += heaps_from_littles;
+  size_t heaps_from_lots = lots / 23;
+  lots -= heaps_from_lots * 23;
   heaps += heaps_from_lots;
-  double total_lots_after_heaps_extraction = leftover_lots * 7;
-  lots = total_lots_after_heaps_extraction;
 }
 
-double Measurement::to_meters() { return 0; }
+size_t Measurement::to_meters() { return 0; }
