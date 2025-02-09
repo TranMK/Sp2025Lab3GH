@@ -10,7 +10,10 @@ public:
   // Constructors.
   Measurement();
   Measurement(double heaps, double lots, double littles);
-  Measurement(double littles);
+  Measurement(double littles) {
+    this->littles = littles;
+    this->rebalance();
+  };
 
   // Getters.
   double get_heaps() { return heaps; }

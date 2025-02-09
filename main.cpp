@@ -9,58 +9,58 @@ void debug_tests();
 int main(int argc, char *argv[]) {
   if (argv[1] != NULL && std::string(argv[1]) == "test") {
     debug_tests();
-  } else {
-    // Run required test.
-    double x, y;
-    std::cout << "Enter a distance x in meters: ";
-    std::cin >> x;
-    std::cin.ignore();
-    std::cin.clear();
-    std::cout << "Enter a distance y in meters: ";
-    std::cin >> y;
+    return 0;
+  }
+  // Run required test.
+  std::string x_i, y_i;
+  std::cout << "Enter a distance x in meters: ";
+  std::getline(std::cin, x_i);
+  std::cout << "Enter a distance y in meters: ";
+  std::getline(std::cin, y_i);
 
-    double total_x_littles = x / little_to_meter;
-    Measurement m_x = Measurement(x);
-    double total_y_littles = y / little_to_meter;
-    Measurement m_y = Measurement(y);
+  double x, y;
+  x = std::stod(x_i);
+  y = std::stod(y_i);
+  double total_x_littles = x / little_to_meter;
+  double total_y_littles = y / little_to_meter;
+  Measurement m_x = Measurement(x);
+  Measurement m_y = Measurement(y);
 
-    std::cout << m_x << std::endl;
-    std::cout << m_y << std::endl;
+  bool should_stop = false;
+  while (!should_stop) {
+    std::cout << "What operation would you like to perform on x and y?"
+              << std::endl;
+    std::cout << "1) Add" << std::endl;
+    std::cout << "2) Subtract" << std::endl;
+    std::cout << "3) Multiply" << std::endl;
+    std::cout << "4) Divide" << std::endl;
 
-    bool should_stop = false;
-    while (!should_stop) {
-      std::cout << "What operation would you like to perform on x and y?"
-                << std::endl;
-      std::cout << "1) Add" << std::endl;
-      std::cout << "2) Subtract" << std::endl;
-      std::cout << "3) Multiply" << std::endl;
-      std::cout << "4) Divide" << std::endl;
+    std::cout << "Operation: ";
+    std::string operation_selection;
+    std::getline(std::cin, operation_selection);
+    int operation = std::stoi(operation_selection);
 
-      std::cout << "Operation: ";
-      size_t operation;
-      std::cin >> operation;
-      std::cin.ignore();
-      std::cin.clear();
+    Measurement result = m_x;
+    switch (operation) {
+    case 1:
+      result + m_y;
+    case 2:
+      result - m_y;
+    case 3:
+      result *m_y;
+    case 4:
+      result / m_y;
+    }
 
-      Measurement result = m_x;
-      switch (operation) {
-      case 1:
-        result + m_y;
-      case 2:
-        result + m_y;
-      case 3:
-        result * m_y;
-      case 4:
-        result / m_y;
-      }
-      std::cout << "Result: " << std::endl << result;
+    if (operation != 1 && operation != 2 && operation != 3 && operation != 4)
+      std::cout << "Invalid operation." << std::endl;
+    std::cout << "Result: " << std::endl << result;
 
-      std::cout << "Do you wish to try another operation? (Y/N): ";
-      char user_continue;
-      std::cin >> user_continue;
-      if (user_continue != 'Y' && user_continue != 'y') {
-        should_stop = true;
-      }
+    std::cout << "Do you wish to try another operation? (Y/N): ";
+    std::string user_continue;
+    std::getline(std::cin, user_continue);
+    if (user_continue != "Y" && user_continue != "y") {
+      should_stop = true;
     }
   }
 
