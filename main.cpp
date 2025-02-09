@@ -1,21 +1,35 @@
+#include <cstdlib>
 #include <iostream>
 
 #include "unit_tests.cpp"
 
-int main() {
-  // Tests.
-  std::vector<std::tuple<bool, size_t>> passes(2, {false, 1});
-  passes[0] = {test_1(), 1};
-  passes[1] = {test_2(), 2};
+void debug_tests();
 
-  // If any test failed.
+int main(int argc, char* argv[]) {
+  if (std::string(argv[1]) == "test") {
+    debug_tests();
+  }
+
+    return 0;
+}
+
+void debug_tests() {
+  
+  auto passes = test_suite::run();
+  bool failed_any = false;
   for (size_t test_idx = 0; test_idx < passes.size(); test_idx++) {
     auto test_pass = passes[test_idx];
     if (!std::get<0>(test_pass)) {
-      std::cout << "Test " << test_idx + 1 << " failed.";
-      return 1;
+      // Test failed.
+      std::cout << "Test " << test_idx + 1 << " failed." << std::endl;
+      failed_any = true;
+    } else {
+      // Test passed.
+      std::cout << "Test " << test_idx + 1 << " passed." << std::endl;
     }
   }
 
-  return 0;
+  if (failed_any) {
+    std::exit(1);
+  };
 }
