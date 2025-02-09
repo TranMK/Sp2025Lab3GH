@@ -1,2 +1,3 @@
 main:
-	g++ --std=c++2b main.cpp heaplotlittle.hpp heaplotlittle.cpp; ./a.out
+	g++ --std=c++2b unit_tests.cpp main.cpp heaplotlittle.hpp heaplotlittle.cpp; ./a.out
+
