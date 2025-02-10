@@ -56,8 +56,13 @@ int main() {
     std::cout << "Do you wish to continue? (Y/N): ";
     std::string user_quit;
     std::getline(std::cin, user_quit);
-    if (user_quit == "N" || user_quit == "n") {
-      should_quit = true;
+    while (user_quit != "Y" && user_quit != "y"){
+        if (user_quit == "N" || user_quit == "n") {
+        should_quit = true;
+        break;
+        }
+        std::cout << "Invalid input. Please enter Y or N: ";
+        std::getline(std::cin, user_quit);
     }
     std::cout << std::endl;
   }
