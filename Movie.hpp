@@ -2,7 +2,7 @@
 
 class Movie : public Show {
 public:
-  double rating;
+  double movie_rating;
 
 public:
   bool set_rating(double rating);

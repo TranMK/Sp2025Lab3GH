@@ -7,14 +7,14 @@ bool Movie::set_rating(double rating) {
     std::cout << "Rating must be between 0 and 10." << std::endl;
     return false;
   }
-  this->rating = rating;
+  movie_rating = rating;
   return true;
 }
 
-void Movie::Play() { std::cout << "Rating: " << rating << std::endl; }
+void Movie::Play() { std::cout << "Rating: " << movie_rating << std::endl; }
 
 void Movie::Details() {
   std::cout << "Title: " << title << std::endl;
   std::cout << "Description: " << description << std::endl;
-  std::cout << "Rating: " << rating << std::endl;
+  std::cout << "Rating: " << movie_rating << std::endl;
 }
