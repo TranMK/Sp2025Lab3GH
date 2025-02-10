@@ -9,7 +9,7 @@ date: "2025-02-06"
 Group members:
 
   - Ansh Mendiratta (Wrote class member implementations)
-  - Khoi Tran
+  - Khoi Tran (Tested class and program implementation)
   - Thanh Tin
 
 ## Compilation
@@ -22,4 +22,4 @@ Additional procedures that weren't required by the assignment:
   - `Measurement::rebalance()`: rebalances the quantities if each of them (minus the heaps) can be "compacted".
 
 ## Assumptions
-1. A `little` is equal to 0.01 meters.
+1. A `little` is equal to 1 meter.
