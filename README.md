@@ -8,8 +8,9 @@ date: "2025-02-06"
 
 Group members:
 
+<<<<<<< HEAD
   - Ansh Mendiratta (Wrote class member implementations, `unit_tests.cpp`, and `main.cpp`)
-  - Khoi Tran (Fixed bugs)
+  - Khoi Tran (Tested class and program implementation)
   - Thanh Tin
 
 ## Compilation
@@ -26,4 +27,4 @@ Additional procedures that weren't required by the assignment:
   - `Measurement::to_littles()`: uses the instance member variable values to convert into an equivalent `littles` count. Used for `rebalance()` and the arithmetic operations.
 
 ## Assumptions
-1. A `little` is equal to 1. meters.
+1. A `little` is equal to 1 meter.
