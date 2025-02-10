@@ -7,7 +7,7 @@ void TVShow::Play() {
   std::cout << "What season number do you wish to play? ";
   std::getline(std::cin, season_number_str);
   std::cout << std::endl;
-  std::cout << "What season number do you wish to play? ";
+  std::cout << "What episode number do you wish to play? ";
   std::getline(std::cin, episode_number_str);
   std::cout << std::endl;
   size_t season_number, episode_number;

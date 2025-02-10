@@ -8,7 +8,7 @@ protected:
   size_t show_id;
 
 public:
-  virtual void Play() = 0;
+  virtual void Play();
   void Details();
 
   bool set_title(std::string title);
