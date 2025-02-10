@@ -20,11 +20,6 @@ bool Show::set_description(std::string description) {
   return false;
 }
 
-bool Show::set_show_id(size_t show_id) {
-  this->show_id = show_id;
-  return true;
-};
-
 void Show::Details() {
   std::cout << "Show: " << title << std::endl;
   std::cout << "Description: " << description << std::endl;
