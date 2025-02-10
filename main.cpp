@@ -2,6 +2,7 @@
 #include <string>
 
 #include "Movie.hpp"
+#include "Show.hpp"
 #include "TVShow.hpp"
 
 void print_show(Show show);
@@ -29,26 +30,24 @@ int main() {
       break;
     }
     case 2: {
-      handle_movie_creation();
-      Movie show;
-      print_show(show);
+      Movie movie;
+      print_show(movie);
       break;
     }
     case 3: {
-      handle_tvshow_creation();
-      Show show;
-      print_show(show);
+      TVShow tv_show;
+      print_show(tv_show);
       break;
     }
     case 4: {
-      handle_movie_as_show_creation();
-      Show show;
-      print_show(show);
+      Movie movie;
+      Show show = movie;
+      print_show(movie);
       break;
     }
     case 5: {
-      handle_tvshow_as_show_creation();
-      Show show;
+      TVShow tv_show;
+      Show show = tv_show;
       print_show(show);
       break;
     }

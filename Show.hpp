@@ -1,6 +1,8 @@
 #include <string>
 #include <utility>
 
+#pragma once
+
 class Show {
 protected:
   std::string title;
@@ -8,8 +10,8 @@ protected:
   size_t show_id;
 
 public:
-  virtual void Play();
   void Details();
+  virtual void Play() {};
 
   bool set_title(std::string title);
   bool set_description(std::string description);
