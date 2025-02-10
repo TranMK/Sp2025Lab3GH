@@ -4,6 +4,7 @@ Group members:
 - Ansh Mendiratta
 - Khoi Tran
 - Thanh Tin
+- Date: 2/10/2025
 
 
 ## class `Show`
