@@ -65,7 +65,6 @@ std::ostream &operator<<(std::ostream &os, Measurement &self) {
   os << "Heaps: " << self.get_heaps() << std::endl;
   os << "Lots: " << self.get_lots() << std::endl;
   os << "Littles: " << self.get_littles() << std::endl;
-  os << "Distance: " << self.get_heaps()*161+self.get_lots()*7+self.get_littles() << " meters." << std::endl;
   return os;
 }
 
