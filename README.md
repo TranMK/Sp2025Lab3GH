@@ -1,10 +1,11 @@
 # CS2028C Lab 4
+Date: 2/10/2025
+
 Group members:
 
 - Ansh Mendiratta
 - Khoi Tran
 - Thanh Tin
-- Date: 2/10/2025
 
 
 ## class `Show`
