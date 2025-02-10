@@ -42,8 +42,8 @@ public:
   bool operator==(Measurement other);
 
   // Convenience.
+  // Need `friend` so the parameters work nicely.
   friend std::ostream &operator<<(std::ostream &os, Measurement &self);
   void rebalance();
-  double to_meters();
   double to_littles();
 };

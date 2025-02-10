@@ -83,12 +83,6 @@ void Measurement::rebalance() {
   lots -= heaps * 23;
 }
 
-double Measurement::to_meters() {
-  double total_littles = (heaps * 23 * 7) + (lots * 7);
-  double total_meters = total_littles * little_to_meter;
-  return total_meters;
-}
-
 double Measurement::to_littles() {
   double total_littles =
       (get_heaps() * 23 * 7) + (get_lots() * 7) + get_littles();
