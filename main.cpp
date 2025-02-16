@@ -7,7 +7,7 @@
 #include "Show.hpp"
 #include "TVShow.hpp"
 
-template <class T> void print_show(T s);
+void print_show(Show s);
 std::vector<Season> get_tv_show_seasons();
 
 int main() {
@@ -51,7 +51,7 @@ int main() {
       movie.set_title(movie_title);
       movie.set_description(movie_description);
       while (!movie.set_rating(std::stod(movie_rating))) {
-        std::cout << "Rating of Movie: ";
+        std::cout << "Re-enter Rating: ";
         std::getline(std::cin, movie_rating);
       }
       print_show(movie);
@@ -83,7 +83,10 @@ int main() {
       Movie movie;
       movie.set_title(movie_title);
       movie.set_description(movie_description);
-      movie.set_rating(std::stod(movie_rating));
+      while (!movie.set_rating(std::stod(movie_rating))) {
+        std::cout << "Re-enter Rating: ";
+        std::getline(std::cin, movie_rating);
+      }
       Show show = movie;
       print_show(show);
       break;
@@ -123,7 +126,7 @@ int main() {
 }
 
 // No explicit restriction on T since the user does not call this function.
-template <class T> void print_show(T show) {
+void print_show(Show show) {
   show.Play();
   show.Details();
 };
@@ -150,7 +153,7 @@ std::vector<Season> get_tv_show_seasons() {
       if (episode_description.empty()) {
         break;
       }
-      
+
       seasons[season].episodes_with_summaries[episode_number] =
           episode_description;
 
