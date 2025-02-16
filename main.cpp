@@ -77,15 +77,15 @@ int main() {
       std::getline(std::cin, movie_title);
       std::cout << "Description of Movie: ";
       std::getline(std::cin, movie_description);
-      std::cout << "Description of Movie: ";
-      std::getline(std::cin, movie_description);
+      std::cout << "Rating of Movie: ";
+      std::getline(std::cin, movie_rating);
 
       Movie movie;
       movie.set_title(movie_title);
       movie.set_description(movie_description);
       movie.set_rating(std::stod(movie_rating));
       Show show = movie;
-      print_show(movie);
+      print_show(show);
       break;
     }
     case 5: {
@@ -142,16 +142,23 @@ std::vector<Season> get_tv_show_seasons() {
   for (size_t season = 0; season < num_seasons; season++) {
 
     while (!episode_description.empty()) {
-      seasons[season].episodes_with_summaries[episode_number] =
-          episode_description;
-
       std::cout << "Enter the description for Season " << season + 1
                 << " Episode " << episode_number
                 << ". Enter nothing and press <ENTER> to stop adding episodes";
       std::getline(std::cin, episode_description);
 
+      if (episode_description.empty()) {
+        break;
+      }
+      
+      seasons[season].episodes_with_summaries[episode_number] =
+          episode_description;
+
       episode_number += 1;
     }
+
+    episode_description = "0";
+    episode_number = 1;
   }
 
   return seasons;

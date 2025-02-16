@@ -17,11 +17,12 @@ void TVShow::Play() {
   std::string episode_summary =
       seasons[season_number - 1].episodes_with_summaries[episode_number];
   std::cout << "Episode summary: " << episode_summary << std::endl;
-  this->Details();
 };
 
 void TVShow::Details() {
+  std::cout << "--- TVSHOW ---" << std::endl;
   std::cout << "Title: " << title << std::endl;
   std::cout << "Description: " << description << std::endl;
   std::cout << "Number of seasons: " << seasons.size() << std::endl;
+  std::cout << std::endl;
 };

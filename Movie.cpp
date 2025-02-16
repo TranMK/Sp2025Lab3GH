@@ -11,10 +11,16 @@ bool Movie::set_rating(double rating) {
   return true;
 }
 
-void Movie::Play() { std::cout << "Rating: " << movie_rating << std::endl; }
+void Movie::Play() {
+  std::cout << "--- MOVIE---" << std::endl;
+  std::cout << "Rating: " << movie_rating << std::endl;
+  std::cout << std::endl;
+}
 
 void Movie::Details() {
+  std::cout << "--- MOVIE---" << std::endl;
   std::cout << "Title: " << title << std::endl;
   std::cout << "Description: " << description << std::endl;
   std::cout << "Rating: " << movie_rating << std::endl;
+  std::cout << std::endl;
 }
