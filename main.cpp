@@ -7,7 +7,8 @@
 #include "Show.hpp"
 #include "TVShow.hpp"
 
-void print_show(Show s);
+template <class T>
+void print_show(T s);
 std::vector<Season> get_tv_show_seasons();
 
 int main() {
@@ -126,7 +127,8 @@ int main() {
 }
 
 // No explicit restriction on T since the user does not call this function.
-void print_show(Show show) {
+template <class T>
+void print_show(T show) {
   show.Play();
   show.Details();
 };
