@@ -137,21 +137,18 @@ std::vector<Season> get_tv_show_seasons() {
   std::vector<Season> seasons = std::vector<Season>(num_seasons);
 
   size_t episode_number = 1;
-  // Default value so the while doesn't run.
+  // Default value so the while runs.
   std::string episode_description = "0";
   for (size_t season = 0; season < num_seasons; season++) {
 
     while (!episode_description.empty()) {
+      seasons[season].episodes_with_summaries[episode_number] =
+          episode_description;
+
       std::cout << "Enter the description for Season " << season + 1
                 << " Episode " << episode_number
                 << ". Enter nothing and press <ENTER> to stop adding episodes";
       std::getline(std::cin, episode_description);
-      if (episode_description.empty()) {
-        break;
-      }
-
-      seasons[season].episodes_with_summaries[episode_number] =
-          episode_description;
 
       episode_number += 1;
     }

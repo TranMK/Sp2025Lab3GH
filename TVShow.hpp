@@ -3,6 +3,8 @@
 
 #include "Show.hpp"
 
+#pragma once
+
 struct Season {
   std::map<size_t, std::string> episodes_with_summaries;
 };

@@ -15,7 +15,7 @@ void TVShow::Play() {
   episode_number = std::stoul(episode_number_str);
 
   std::string episode_summary =
-      seasons[season_number].episodes_with_summaries[episode_number];
+      seasons[season_number - 1].episodes_with_summaries[episode_number];
   std::cout << "Episode summary: " << episode_summary << std::endl;
   this->Details();
 };
