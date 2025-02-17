@@ -25,12 +25,21 @@ int main() {
     case 1: {
       auto *new_movie = new Movie;
       get_and_add_movie_attributes(new_movie);
-      shelf.add_movie(new_movie);
+      try {
+        shelf.add_movie(new_movie);
+      } catch (std::string e) {
+        std::cout << e << std::endl;
+      };
       break;
     }
     case 2: {
-      Movie *removed_movie = shelf.remove_movie();
-      removed_movie->Details();
+      try {
+        Movie *removed_movie = shelf.remove_movie();
+        removed_movie->Details();
+      } catch (std::string e) {
+        std::cout << e << std::endl;
+        ;
+      };
       break;
     }
     case 3:
