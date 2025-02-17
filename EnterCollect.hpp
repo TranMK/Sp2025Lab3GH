@@ -1,7 +1,10 @@
+#include <cstddef>
+
 #pragma once
+
 const size_t MAX_COLLECTION_SIZE = 10;
-template<class T>
-class EnterCollect {
+
+template <class T> class EnterCollect {
   T *collection[MAX_COLLECTION_SIZE] = {};
   size_t T_count = 0;
 
