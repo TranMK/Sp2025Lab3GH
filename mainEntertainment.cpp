@@ -26,7 +26,7 @@ int main() {
     case 1: {
       auto *new_game = new Game;
       try {
-        collection.add(new_game);
+        collection.add_item(new_game);
       } catch (std::string e) {
         std::cout << e << std::endl;
       };
@@ -35,7 +35,7 @@ int main() {
     }
     case 2: {
       try {
-        Game *removed_game = collection.remove();
+        Game *removed_game = collection.remove_item();
         removed_game->Details();
       } catch (std::string e) {
         std::cout << e << std::endl;
@@ -44,7 +44,7 @@ int main() {
       break;
     }
     case 3:
-      size_t game_count = collection.get_count();
+      size_t game_count = collection.get_item_count();
       std::cout << game_count << " Game(s) left in the collection."
                 << std::endl;
       break;
@@ -66,7 +66,7 @@ void get_and_add_game_attributes(Game *game) {
   std::getline(std::cin, game_rating_as_str);
   std::cout << std::endl;
 
-  size_t game_rating = std::stoul(game_rating_as_str);
+  double game_rating = std::stod(game_rating_as_str);
   game->set_title(game_title);
   game->set_description(game_description);
   game->set_rating(game_rating);

@@ -10,6 +10,7 @@ bool Game::set_rating(double rating) {
   game_rating = rating;
   return true;
 }
+
 void Game::Details() {
   std::cout << "Title: " << title << std::endl;
   std::cout << "Description: " << description << std::endl;

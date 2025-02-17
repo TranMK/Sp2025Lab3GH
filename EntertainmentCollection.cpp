@@ -1,19 +1,22 @@
 #include <string>
 
 #include "EntertainmentCollection.hpp"
+#include "Game.hpp"
 
-template <class T> void EntertainmentCollection<T>::add(T *to_add) {
-  if (count == MAX_COLLECTION_SIZE) {
+template <class T> void EntertainmentCollection<T>::add_item(T *to_add) {
+  if (item_count == MAX_COLLECTION_SIZE) {
     throw std::string("FullCollectionError");
   }
-  collection[count++] = to_add;
+  collection[item_count++] = to_add;
 }
 
-template <class T> T *EntertainmentCollection<T>::remove() {
-  if (count == 0) {
+template <class T> T *EntertainmentCollection<T>::remove_item() {
+  if (item_count == 0) {
     throw std::string("EmptyCollectionError");
   }
-  T *copy = collection[count - 1];
-  collection[--count] = nullptr;
+  T *copy = collection[item_count - 1];
+  collection[--item_count] = nullptr;
   return copy;
 }
+
+template class EntertainmentCollection<Game>;
