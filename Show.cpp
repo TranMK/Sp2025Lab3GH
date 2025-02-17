@@ -21,8 +21,6 @@ bool Show::set_description(std::string description) {
 }
 
 void Show::Details() {
-  std::cout << "--- SHOW ---" << std::endl;
   std::cout << "Show: " << title << std::endl;
   std::cout << "Description: " << description << std::endl;
-  std::cout << std::endl;
 }
