@@ -3,7 +3,6 @@
 
 #include "Shelf.hpp"
 
-template <class T> void print_show(T s);
 void get_and_add_movie_attributes(Movie *movie);
 
 int main() {
@@ -51,12 +50,6 @@ int main() {
 
   return 0;
 }
-
-// No explicit restriction on T since the user does not call this function.
-template <class T> void print_show(T show) {
-  show.Play();
-  show.Details();
-};
 
 void get_and_add_movie_attributes(Movie *movie) {
   std::string movie_title, movie_description, movie_rating_as_str;

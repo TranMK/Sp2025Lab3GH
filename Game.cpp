@@ -1,5 +1,6 @@
-#include "Game.hpp"
 #include <iostream>
+
+#include "Game.hpp"
 
 bool Game::set_rating(double rating) {
   if (rating <= 0. || rating >= 10.) {

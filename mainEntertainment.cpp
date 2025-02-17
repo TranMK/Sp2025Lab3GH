@@ -1,20 +1,20 @@
 #include <iostream>
 #include <string>
 
-#include "EnterCollect.hpp"
+#include "EntertainmentCollection.hpp"
 #include "Game.hpp"
 
-template <class T> void print_show(T s);
-void get_and_add_Game_attributes(Game *Game);
+void get_and_add_game_attributes(Game *game);
 
 int main() {
-  EnterCollect<Game> collection;
+  EntertainmentCollection<Game> collection;
 
   while (true) {
     std::cout << "--- OPTIONS ---" << std::endl;
     std::cout << "Press 1 to add a Game to the collection" << std::endl;
     std::cout << "Press 2 to remove a Game from the collection" << std::endl;
-    std::cout << "Press 3 to see how many Games are on the collection" << std::endl;
+    std::cout << "Press 3 to see how many Games are on the collection"
+              << std::endl;
     std::cout << "Press 4 to quit" << std::endl;
     std::string user_option;
     std::getline(std::cin, user_option);
@@ -24,19 +24,29 @@ int main() {
 
     switch (std::stoul(user_option)) {
     case 1: {
-      auto *new_Game = new Game;
-      get_and_add_Game_attributes(new_Game);
-      collection.add_T(new_Game);
+      auto *new_game = new Game;
+      try {
+        collection.add(new_game);
+      } catch (std::string e) {
+        std::cout << e << std::endl;
+      };
+      get_and_add_game_attributes(new_game);
       break;
     }
     case 2: {
-      Game *removed_Game = collection.remove_T();
-      removed_Game->Details();
+      try {
+        Game *removed_game = collection.remove();
+        removed_game->Details();
+      } catch (std::string e) {
+        std::cout << e << std::endl;
+        ;
+      };
       break;
     }
     case 3:
-      size_t Game_count = collection.get_T_count();
-      std::cout << Game_count << " Game(s) left in the collection." << std::endl;
+      size_t game_count = collection.get_count();
+      std::cout << game_count << " Game(s) left in the collection."
+                << std::endl;
       break;
     }
   }
@@ -44,26 +54,20 @@ int main() {
   return 0;
 }
 
-// No explicit restriction on T since the user does not call this function.
-template <class T> void print_show(T show) {
-  show.Play();
-  show.Details();
-};
-
-void get_and_add_Game_attributes(Game *Game) {
-  std::string Game_title, Game_description, Game_rating_as_str;
-  std::cout << "Enter the title of the Game: ";
-  std::getline(std::cin, Game_title);
+void get_and_add_game_attributes(Game *game) {
+  std::string game_title, game_description, game_rating_as_str;
+  std::cout << "Enter the title of the game: ";
+  std::getline(std::cin, game_title);
   std::cout << std::endl;
-  std::cout << "Enter the description of the Game: ";
-  std::getline(std::cin, Game_description);
+  std::cout << "Enter the description of the game: ";
+  std::getline(std::cin, game_description);
   std::cout << std::endl;
-  std::cout << "Enter the rating of the Game: ";
-  std::getline(std::cin, Game_rating_as_str);
+  std::cout << "Enter the rating of the game: ";
+  std::getline(std::cin, game_rating_as_str);
   std::cout << std::endl;
 
-  size_t Game_rating = std::stoul(Game_rating_as_str);
-  Game->set_title(Game_title);
-  Game->set_description(Game_description);
-  Game->set_rating(Game_rating);
+  size_t game_rating = std::stoul(game_rating_as_str);
+  game->set_title(game_title);
+  game->set_description(game_description);
+  game->set_rating(game_rating);
 };
