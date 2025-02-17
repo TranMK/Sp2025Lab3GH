@@ -3,7 +3,7 @@
 #include "Movie.hpp"
 
 bool Movie::set_rating(double rating) {
-  if (rating <= 0. || rating >= 10.) {
+  if (rating < 0. || rating > 10.) {
     std::cout << "Rating must be between 0 and 10." << std::endl;
     return false;
   }

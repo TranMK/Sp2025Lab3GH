@@ -9,9 +9,9 @@ Date: 2/10/2025
 
 Group members:
 
-- Ansh Mendiratta
-- Khoi Tran
-- Thanh Tin
+- Ansh Mendiratta(33%): Main, Show and TVShow class implementation
+- Khoi Tran(33%): Movie class implementation and testing
+- Thanh Tin(33%): Movie class implementation
 
 ## class `Show`
 - `Show::play()` will be available to derived classes and will be implemented in and call by the derived class (note the `virtual`).
