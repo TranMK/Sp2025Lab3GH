@@ -11,6 +11,6 @@ class Shelf {
 public:
   Shelf() = default;
   void add_movie(Movie *movie_to_add) { movies[movie_count++] = movie_to_add; };
-  void remove_movie() { movies[--movie_count] = nullptr; };
+  Movie *remove_movie();
   size_t get_movie_count() { return movie_count; }
 };

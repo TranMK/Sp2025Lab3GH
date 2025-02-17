@@ -29,7 +29,8 @@ int main() {
       break;
     }
     case 2: {
-      shelf.remove_movie();
+      Movie *removed_movie = shelf.remove_movie();
+      removed_movie->Details();
       break;
     }
     case 3:
