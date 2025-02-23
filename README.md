@@ -43,7 +43,7 @@ Tests prior to error checking:
 |![[Pasted image 20250222205535.png\|200]]|![[Pasted image 20250222205601.png\|200]]|
 |-|-
 ![[Pasted image 20250222205615.png\|300]]
- Tests after error checking:
+Tests after error checking:
 
 ![[Pasted image 20250223102929.png\|500]]
 ![[Pasted image 20250223103010.png\|300]]
