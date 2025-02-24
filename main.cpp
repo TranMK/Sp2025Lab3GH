@@ -1,9 +1,10 @@
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <numeric>
+#include <unistd.h>
 #include <vector>
 
+#include "Errors.hpp"
 #include "Queue.hpp"
 #include "Stack.hpp"
 
@@ -16,43 +17,32 @@ auto join_strings(std::vector<std::string> strings, std::string delimiter)
 auto reverse_join_chars(Stack<char> s) -> std::string;
 
 auto main() -> int {
-  std::string input_src;
+  char input_src;
   std::cout << "Would you like to add input from the terminal or from a file? "
                "(t/f): ";
-  std::getline(std::cin, input_src);
-  std::cout << std::endl;
+  std::cin >> input_src;
+  std::cin.ignore();
+  std::cin.clear();
 
-  switch (input_src[0]) {
+  switch (input_src) {
   case 't': {
     break;
   }
-  case 'f':
+  case 'f': {
     std::string file_path;
     std::cout << "Enter the name of the file in this directory: ";
     std::getline(std::cin, file_path);
-    std::cout << std::endl;
 
     // Determines if the file the user input is available.
-    bool found_file_in_dir = false;
-    for (const auto &entry : fs::directory_iterator("")) {
-      if (entry.path().filename() == file_path) {
-        found_file_in_dir = true;
-      }
-    }
-
-    while (!found_file_in_dir) {
+    std::ifstream file(file_path);
+    while (!file.good()) {
       std::cout
           << "Could not find the file in the current directory. Try again: ";
       std::getline(std::cin, file_path);
-      for (const auto &entry : fs::directory_iterator("")) {
-        if (entry.path().filename() == file_path) {
-          found_file_in_dir = true;
-        }
-      }
+      file.open(file_path);
     }
 
     // File is available.
-    std::ifstream file{file_path};
     std::vector<std::string> reversed_words_sentence;
 
     std::string file_line;
@@ -79,8 +69,8 @@ auto main() -> int {
     }
 
     file.close();
-
     break;
+  }
   }
 
   return 0;
@@ -109,14 +99,18 @@ auto join_strings(std::vector<std::string> strings, std::string delimiter)
 };
 
 auto reverse_join_chars(Stack<char> s) -> std::string {
-  std::vector<char> chars;
-  char c;
-  while ((c = *s.pop())) {
-    chars.push_back(c);
+  std::vector<std::string> chars;
+  try {
+
+    char *c = s.pop();
+    while (s.length() != 0) {
+      chars.push_back(std ::string(1, *c));
+      c = s.pop();
+    }
+  } catch (StackUnderflowError e) {
+    std::cout << e.message << "AT" << __FILE__ << __LINE__;
   }
 
-  std::string first_char(1, chars[0]);
-  return std::accumulate(
-      std::next(chars.begin()), chars.end(), first_char,
-      [](char a, char b) { return std::string(1, a) + std::string(1, b); });
+  return std::accumulate(std::next(chars.begin()), chars.end(), chars[0],
+                         [](std::string a, std::string b) { return a + b; });
 };

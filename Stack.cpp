@@ -5,7 +5,7 @@ template <class T> auto Stack<T>::push(T *to_add) -> void {
   if (size == MAX_STACK_SIZE) {
     throw StackOverflowError{};
   }
-  data[size++] = to_add;
+  data[++size] = to_add;
 }
 
 template <class T> auto Stack<T>::pop() -> T * {
@@ -13,7 +13,7 @@ template <class T> auto Stack<T>::pop() -> T * {
   if (size == 0) {
     throw StackUnderflowError{};
   }
-  return data[--size];
+  return data[size--];
 }
 
 template <class T> auto Stack<T>::top() -> T * {
@@ -32,4 +32,4 @@ template <class T> auto Stack<T>::empty() -> void {
   size = 0;
 }
 
-template <> class Stack<std::string> {};
+template class Stack<char>;
