@@ -5,6 +5,7 @@
 const size_t MAX_STACK_SIZE = 10;
 
 template <class T> class Stack {
+private:
   std::array<T *, MAX_STACK_SIZE> data;
   size_t size;
 

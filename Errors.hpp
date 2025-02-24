@@ -9,3 +9,11 @@ class StackOverflowError {
 class StackUnderflowError {
   std::string message = "Stack Underflow";
 };
+
+class QueueOverflowError {
+  std::string message = "Queue Overflow";
+};
+
+class QueueUnderflowError {
+  std::string message = "Queue Underflow";
+};
