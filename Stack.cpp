@@ -31,3 +31,5 @@ template <class T> auto Stack<T>::empty() -> void {
   }
   size = 0;
 }
+
+template <> class Stack<std::string> {};

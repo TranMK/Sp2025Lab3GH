@@ -2,7 +2,7 @@
 
 #pragma once
 
-const size_t MAX_STACK_SIZE = 5;
+const size_t MAX_STACK_SIZE = 10;
 
 template <class T> class Stack {
   std::array<T *, MAX_STACK_SIZE> data;
