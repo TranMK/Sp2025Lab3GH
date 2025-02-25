@@ -53,14 +53,14 @@ auto main() -> int {
 
       Queue<std::string> sentencer_order_preserver(words_in_line_count);
       Stack<char> reverser(file_line.size());
-      for (std::string &word : words_in_line) {
-        for (char &character : word) {
+      for (std::string word : std::move(words_in_line)) {
+        for (char character : std::move(word)) {
           reverser.push(&character);
         }
         std::string reversed_word =
             reverse_join_chars(reverser); // This call empties the reverser by
                                           // calling `pop()` repeatedly.
-        reversed_words_sentence.push_back(reversed_word);
+        reversed_words_sentence.push_back(std::move(reversed_word));
       }
 
       std::string reversed_sentence =
