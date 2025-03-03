@@ -47,7 +47,7 @@ auto main() -> int {
 
     std::string reversed_sentence =
         join_strings(std::move(sentence_order_preserver), " ");
-    std::cout << reversed_sentence << std::endl;
+    std::cout << reversed_sentence <<  std::endl;
 
     break;
   }
@@ -123,14 +123,11 @@ auto join_strings(Queue<std::string> reversed_words,
     std::unique_ptr<std::string> reversed_word;
     reversed_word = reversed_words.dequeue();
     while (reversed_word != nullptr) {
-      reversed_sentence << *reversed_word;
+      reversed_sentence << *reversed_word + " ";
       reversed_word = reversed_words.dequeue();
     }
   } catch (QueueUnderflowError e) {
-    std::cout << e.message << " IN FILE: " << __FILE__ " AT LINE: " << __LINE__
-              << std::endl;
-    ;
-    std::cout << "Handled." << std::endl;
+    // Do nothing.
   }
 
   return reversed_sentence.str();
@@ -145,9 +142,7 @@ auto reverse_join_chars(Stack<char> &s) -> std::string {
       chars.push_back(std::string(1, **c));
     }
   } catch (StackUnderflowError e) {
-    std::cout << e.message << " IN FILE: " << __FILE__ " AT LINE: " << __LINE__
-              << std::endl;
-    std::cout << "Handled." << std::endl;
+    // Do nothing.
   }
 
   return std::accumulate(std::next(chars.begin()), chars.end(), chars[0],
