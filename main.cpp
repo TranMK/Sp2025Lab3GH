@@ -1,3 +1,5 @@
+#include <cctype>
+#include <cstddef>
 #include <fstream>
 #include <iostream>
 #include <numeric>
@@ -9,10 +11,10 @@
 #include "Queue.hpp"
 #include "Stack.hpp"
 
-auto string_split(std::string to_split,
-                  std::string delimiter) -> std::vector<std::string>;
-auto join_strings(Queue<std::string> reversed_words,
-                  std::string delimiter) -> std::string;
+auto string_split(std::string to_split, std::string delimiter)
+    -> std::vector<std::string>;
+auto join_strings(Queue<std::string> reversed_words, std::string delimiter)
+    -> std::string;
 auto reverse_join_chars(Stack<char> &s) -> std::string;
 
 auto main() -> int {
@@ -27,7 +29,6 @@ auto main() -> int {
   case 't': {
     std::string user_text;
     std::getline(std::cin, user_text);
-    size_t user_text_count = user_text.size();
     std::vector<std::string> words_in_line =
         string_split(user_text, std::string(" "));
 
@@ -47,7 +48,7 @@ auto main() -> int {
 
     std::string reversed_sentence =
         join_strings(std::move(sentence_order_preserver), " ");
-    std::cout << reversed_sentence <<  std::endl;
+    std::cout << reversed_sentence << std::endl;
 
     break;
   }
@@ -65,13 +66,11 @@ auto main() -> int {
       file.open(file_path);
     }
 
-    std::cout << "HERE";
     // File is available.
     std::string file_line;
     while (std::getline(file, file_line)) {
       std::vector<std::string> words_in_line =
           string_split(file_line, std::string(" "));
-      size_t words_in_line_count = words_in_line.size();
 
       Queue<std::string> sentence_order_preserver(0);
       for (std::string &word : words_in_line) {
@@ -100,8 +99,8 @@ auto main() -> int {
   return 0;
 }
 
-auto string_split(std::string to_split,
-                  std::string delimiter) -> std::vector<std::string> {
+auto string_split(std::string to_split, std::string delimiter)
+    -> std::vector<std::string> {
   std::vector<std::string> split_words;
 
   size_t delim_pos = 0;
@@ -115,8 +114,8 @@ auto string_split(std::string to_split,
   return split_words;
 }
 
-auto join_strings(Queue<std::string> reversed_words,
-                  std::string delimiter) -> std::string {
+auto join_strings(Queue<std::string> reversed_words, std::string delimiter)
+    -> std::string {
   std::stringstream reversed_sentence;
 
   try {
@@ -135,14 +134,23 @@ auto join_strings(Queue<std::string> reversed_words,
 
 auto reverse_join_chars(Stack<char> &s) -> std::string {
   std::vector<std::string> chars;
+  char *non_alpha = nullptr;
 
   try {
     while (s.length() != 0) {
       std::unique_ptr<char> *c = s.pop();
-      chars.push_back(std::string(1, **c));
+      if (!std::isalnum(**c)) {
+        non_alpha = &(**c);
+      } else {
+        chars.push_back(std::string(1, **c));
+      }
     }
   } catch (StackUnderflowError e) {
     // Do nothing.
+  }
+
+  if (non_alpha) {
+    chars.push_back(std::string(1, *non_alpha));
   }
 
   return std::accumulate(std::next(chars.begin()), chars.end(), chars[0],
