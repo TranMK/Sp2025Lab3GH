@@ -4,7 +4,7 @@
 
 #pragma once
 
-const size_t MAX_QUEUE_SIZE = 10;
+const size_t MAX_QUEUE_SIZE = 30;
 
 template <class T> class Queue {
 private:
