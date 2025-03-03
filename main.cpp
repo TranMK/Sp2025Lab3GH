@@ -28,23 +28,25 @@ auto main() -> int {
     std::string user_text;
     std::getline(std::cin, user_text);
     size_t user_text_count = user_text.size();
-      std::vector<std::string> words_in_line =
-          string_split(user_text, std::string(" "));
+    std::vector<std::string> words_in_line =
+        string_split(user_text, std::string(" "));
 
-    Queue<std::string> sentence_order_preserver(user_text_count);
+    Queue<std::string> sentence_order_preserver(0);
     for (std::string &word : words_in_line) {
-      Stack<char> reverser(word.size());
+      Stack<char> reverser(0);
       for (char &character : word) {
-        reverser.push(&character);
+        reverser.push(std::make_unique<char>(character));
       }
 
       std::string reversed_word =
           reverse_join_chars(reverser); // This call empties the reverser by
                                         // calling `pop()` repeatedly.
-      sentence_order_preserver.enqueue(&reversed_word);
+      sentence_order_preserver.enqueue(
+          std::make_unique<std::string>(reversed_word));
     }
 
-    std::string reversed_sentence = join_strings(sentence_order_preserver, " ");
+    std::string reversed_sentence =
+        join_strings(std::move(sentence_order_preserver), " ");
     std::cout << reversed_sentence << std::endl;
 
     break;
@@ -63,29 +65,30 @@ auto main() -> int {
       file.open(file_path);
     }
 
+    std::cout << "HERE";
     // File is available.
     std::string file_line;
     while (std::getline(file, file_line)) {
       std::vector<std::string> words_in_line =
           string_split(file_line, std::string(" "));
       size_t words_in_line_count = words_in_line.size();
-      std::cout << "HERE";
 
-      Queue<std::string> sentence_order_preserver(words_in_line_count);
+      Queue<std::string> sentence_order_preserver(0);
       for (std::string &word : words_in_line) {
-        Stack<char> reverser(word.size());
+        Stack<char> reverser(0);
         for (char &character : word) {
-          reverser.push(&character);
+          reverser.push(std::make_unique<char>(character));
         }
 
         std::string reversed_word =
             reverse_join_chars(reverser); // This call empties the reverser by
                                           // calling `pop()` repeatedly.
-        sentence_order_preserver.enqueue(&reversed_word);
+        sentence_order_preserver.enqueue(
+            std::make_unique<std::string>(reversed_word));
       }
 
       std::string reversed_sentence =
-          join_strings(sentence_order_preserver, " ");
+          join_strings(std::move(sentence_order_preserver), " ");
       std::cout << reversed_sentence << std::endl;
     }
 
@@ -117,12 +120,17 @@ auto join_strings(Queue<std::string> reversed_words,
   std::stringstream reversed_sentence;
 
   try {
-    std::string *reversed_word;
-    while ((reversed_word = reversed_words.dequeue())) {
-      reversed_sentence << reversed_word;
+    std::unique_ptr<std::string> reversed_word;
+    reversed_word = reversed_words.dequeue();
+    while (reversed_word != nullptr) {
+      reversed_sentence << *reversed_word;
+      reversed_word = reversed_words.dequeue();
     }
   } catch (QueueUnderflowError e) {
-    std::cout << e.message << "AT" << __FILE__ << __LINE__;
+    std::cout << e.message << " IN FILE: " << __FILE__ " AT LINE: " << __LINE__
+              << std::endl;
+    ;
+    std::cout << "Handled." << std::endl;
   }
 
   return reversed_sentence.str();
@@ -133,12 +141,13 @@ auto reverse_join_chars(Stack<char> &s) -> std::string {
 
   try {
     while (s.length() != 0) {
-      char *c = s.pop();
-      chars.push_back(std ::string(1, *c));
-      delete (c);
+      std::unique_ptr<char> *c = s.pop();
+      chars.push_back(std::string(1, **c));
     }
   } catch (StackUnderflowError e) {
-    std::cout << e.message << "AT" << __FILE__ << __LINE__;
+    std::cout << e.message << " IN FILE: " << __FILE__ " AT LINE: " << __LINE__
+              << std::endl;
+    std::cout << "Handled." << std::endl;
   }
 
   return std::accumulate(std::next(chars.begin()), chars.end(), chars[0],

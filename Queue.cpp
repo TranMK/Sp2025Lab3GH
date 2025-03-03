@@ -1,32 +1,28 @@
 #include "Queue.hpp"
 #include "Errors.hpp"
 
-template <class T> auto Queue<T>::enqueue(T *to_add) -> void {
+template <class T> auto Queue<T>::enqueue(std::unique_ptr<T> to_add) -> void {
   if (is_full()) {
     throw QueueOverflowError{};
   }
-  data[front] = to_add;
+  data[front] = std::move(to_add);
   front = (front + 1) % MAX_QUEUE_SIZE;
   size++;
 }
 
-template <class T> auto Queue<T>::dequeue() -> T * {
+template <class T> auto Queue<T>::dequeue() -> std::unique_ptr<T>  {
   if (is_empty()) {
     throw QueueUnderflowError{};
   }
   size--;
-  T *retval = data[back];
+  std::unique_ptr<T> retval = std::move(data[back]);
   back = (back + 1) % MAX_QUEUE_SIZE;
   return retval;
 }
 
-template <class T> auto Queue<T>::peek() -> T * { return data[front]; }
+template <class T> auto Queue<T>::peek() -> std::unique_ptr<T>  { return std::move(data[front]); }
 
 template <class T> auto Queue<T>::empty() -> void {
-  for (auto &index : data) {
-    delete(index);
-    index = nullptr;
-  }
   size = 0;
 }
 
