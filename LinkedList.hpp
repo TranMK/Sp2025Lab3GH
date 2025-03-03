@@ -21,12 +21,12 @@ public:
     }
   }
 
-  auto add_item() -> void;
+  auto add_item(T *value_to_add) -> void;
   auto get_item() -> LinkedListNode<T> *;
 
-  auto is_in_list() -> bool;
+  auto is_in_list(T *find_val) -> bool;
   auto is_empty() -> bool;
-  auto get_size() -> size_t;
+  auto get_size() -> size_t { return size; };
 
   auto see_next() -> LinkedListNode<T>;
   auto see_prev() -> LinkedListNode<T>;
