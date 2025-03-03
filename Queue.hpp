@@ -1,4 +1,5 @@
 #include <array>
+#include <cstddef>
 
 #pragma once
 
@@ -13,11 +14,12 @@ private:
 
 public:
   Queue(size_t size) : size(size) {}
+
   auto enqueue(T *to_add) -> void;
   auto dequeue() -> T *;
   auto peek() -> T *;
-  auto length() -> size_t;
+  auto length() -> size_t { return size; }
+  auto is_full() -> bool { return size == MAX_QUEUE_SIZE; }
+  auto is_empty() -> bool { return size == 0; }
   auto empty() -> void;
-  auto isempty() -> bool;
-  auto isfull() -> bool;
 };

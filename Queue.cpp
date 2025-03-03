@@ -1,17 +1,9 @@
 #include "Queue.hpp"
 #include "Errors.hpp"
 
-template <class T> auto Queue<T>::length() -> size_t { return size; }
-
-template <class T> auto Queue<T>::isfull() -> bool {
-  return size == MAX_QUEUE_SIZE;
-}
-
-template <class T> auto Queue<T>::isempty() -> bool { return size == 0; }
-
 template <class T> auto Queue<T>::enqueue(T *to_add) -> void {
-  if (isfull()) {
-    throw StackOverflowError{};
+  if (is_full()) {
+    throw QueueOverflowError{};
   }
   data[front] = to_add;
   front = (front + 1) % MAX_QUEUE_SIZE;
@@ -19,9 +11,8 @@ template <class T> auto Queue<T>::enqueue(T *to_add) -> void {
 }
 
 template <class T> auto Queue<T>::dequeue() -> T * {
-  // Should do `data.empty()` instead we're using `std::array`.
-  if (isempty()) {
-    throw StackUnderflowError{};
+  if (is_empty()) {
+    throw QueueUnderflowError{};
   }
   size--;
   T *retval = data[back];
@@ -29,10 +20,11 @@ template <class T> auto Queue<T>::dequeue() -> T * {
   return retval;
 }
 
-template <class T> auto Queue<T>::peek() -> T * { return data[back]; }
+template <class T> auto Queue<T>::peek() -> T * { return data[front]; }
 
 template <class T> auto Queue<T>::empty() -> void {
   for (auto &index : data) {
+    delete(index);
     index = nullptr;
   }
   size = 0;

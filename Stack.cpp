@@ -9,7 +9,7 @@ template <class T> auto Stack<T>::push(T *to_add) -> void {
 }
 
 template <class T> auto Stack<T>::pop() -> T * {
-  // Should do `data.empty()` instead we're using `std::array`.
+  // Should do `data.empty()` when using using `std::array`.
   if (size == 0) {
     throw StackUnderflowError{};
   }
@@ -26,8 +26,9 @@ template <class T> auto Stack<T>::top() -> T * {
 template <class T> auto Stack<T>::length() -> size_t { return size; }
 
 template <class T> auto Stack<T>::empty() -> void {
-  for (auto &datum : data) {
-    datum = nullptr;
+  for (auto *datum : data) {
+    delete (datum);
+    // datum = nullptr;
   }
   size = 0;
 }
