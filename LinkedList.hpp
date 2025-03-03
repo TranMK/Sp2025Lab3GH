@@ -22,9 +22,9 @@ public:
   }
 
   auto add_item(T *value_to_add) -> void;
-  auto get_item() -> LinkedListNode<T> *;
+  auto get_item(T *value_to_find) -> LinkedListNode<T> *;
 
-  auto is_in_list(T *find_val) -> bool;
+  auto is_in_list(T *value_to_find) -> bool;
   auto is_empty() -> bool;
   auto get_size() -> size_t { return size; };
 

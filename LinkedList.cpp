@@ -16,9 +16,36 @@ template <class T> auto DoublyLinkedList<T>::add_item(T *value_to_add) -> void {
   node_to_add->get_next()->set_prev(node_to_add);
 }
 template <class T>
-auto DoublyLinkedList<T>::get_item() -> LinkedListNode<T> * {}
+auto DoublyLinkedList<T>::get_item(T *value_to_find) -> LinkedListNode<T> * {
+  // TODO(Ansh): Refactor later. Shares most lines with
+  // `DoublyLinkedList::is_in_list()`.
+  LinkedListNode<T> *curr_node = head;
+  while (curr_node->get_next() != nullptr &&
+         curr_node->get_value() != value_to_find) {
+    curr_node = curr_node->get_next();
+  }
+  if (curr_node->get_value() == value_to_find) {
+    // Join the two nodes on either side.
+    curr_node->get_prev()->set_next(curr_node->next());
+    curr_node->get_next()->set_prev(curr_node->prev());
+    return curr_node;
+  }
+  return nullptr;
+}
 
-template <class T> auto DoublyLinkedList<T>::is_in_list(T *find_val) -> bool {}
+template <class T>
+auto DoublyLinkedList<T>::is_in_list(T *value_to_find) -> bool {
+  LinkedListNode<T> *curr_node = head;
+  while (curr_node->get_next() != nullptr &&
+         curr_node->get_value() != value_to_find) {
+    curr_node = curr_node->get_next();
+  }
+  if (curr_node->get_value() == value_to_find) {
+    // Join the two nodes on either side.
+    return true;
+  }
+  return false;
+}
 template <class T> auto DoublyLinkedList<T>::is_empty() -> bool {
   return size == 0;
 }
