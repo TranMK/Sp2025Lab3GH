@@ -7,10 +7,12 @@
 template <class T> class DoublyLinkedList {
 private:
   LinkedListNode<T> *head;
+  LinkedListNode<T> *node_cursor;
   size_t size = 0;
 
 public:
-  DoublyLinkedList(T init_value) : head(LinkedListNode(init_value)), size(1) {}
+  DoublyLinkedList(T init_value)
+      : head(LinkedListNode(init_value)), node_cursor(head), size(1) {}
   ~DoublyLinkedList() {
     size = 0;
 
@@ -28,8 +30,8 @@ public:
   auto is_empty() -> bool;
   auto get_size() -> size_t { return size; };
 
-  auto see_next() -> LinkedListNode<T>;
-  auto see_prev() -> LinkedListNode<T>;
-  auto see_at() -> LinkedListNode<T>;
+  auto see_next() -> LinkedListNode<T> *;
+  auto see_prev() -> LinkedListNode<T> *;
+  auto see_at(size_t index) -> LinkedListNode<T> *;
   auto reset() -> void;
 };

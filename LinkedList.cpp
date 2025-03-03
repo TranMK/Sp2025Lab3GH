@@ -1,4 +1,5 @@
 #include "LinkedList.hpp"
+#include "Errors.hpp"
 
 template <class T> auto DoublyLinkedList<T>::add_item(T *value_to_add) -> void {
   LinkedListNode<T> *node_before_insertion = head;
@@ -50,7 +51,32 @@ template <class T> auto DoublyLinkedList<T>::is_empty() -> bool {
   return size == 0;
 }
 
-template <class T> auto DoublyLinkedList<T>::see_next() -> LinkedListNode<T> {}
-template <class T> auto DoublyLinkedList<T>::see_prev() -> LinkedListNode<T> {}
-template <class T> auto DoublyLinkedList<T>::see_at() -> LinkedListNode<T> {}
-template <class T> auto DoublyLinkedList<T>::reset() -> void {}
+template <class T> auto DoublyLinkedList<T>::see_next() -> LinkedListNode<T> * {
+  if (size == 0) {
+    throw SeeEmptyListError{};
+  }
+  return node_cursor->get_next();
+}
+template <class T> auto DoublyLinkedList<T>::see_prev() -> LinkedListNode<T> * {
+  if (size == 0) {
+    throw SeeEmptyListError{};
+  }
+  return node_cursor->get_prev();
+}
+template <class T>
+auto DoublyLinkedList<T>::see_at(size_t index) -> LinkedListNode<T> * {
+  if (size - 1 < index) {
+    throw nullptr;
+  }
+
+  LinkedListNode<T> *curr_node = head;
+  for (size_t i = 0; i < index; i++) {
+    curr_node = curr_node->get_next();
+  }
+
+  return curr_node;
+}
+template <class T> auto DoublyLinkedList<T>::reset() -> void {
+  LinkedListNode<T> node_cursor = LinkedListNode<T>(nullptr);
+  node_cursor->set_next(head);
+}
