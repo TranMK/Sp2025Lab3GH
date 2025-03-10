@@ -36,12 +36,15 @@ auto DoublyLinkedList<T>::get_item(T *value_to_find) -> LinkedListNode<T> * {
   }
   if (curr_node->get_value() == value_to_find) {
     // Join the two nodes on either side.
-    curr_node->get_prev()->set_next(curr_node->get_next());
-    curr_node->get_next()->set_prev(curr_node->get_prev());
+    if (curr_node->get_prev() != nullptr)
+      curr_node->get_prev()->set_next(curr_node->get_next());
+    if (curr_node->get_next() != nullptr)
+      curr_node->get_next()->set_prev(curr_node->get_prev());
     --size;
     return curr_node;
+  } else {
+    throw ItemNotFound();
   }
-  return nullptr;
 }
 
 template <class T>

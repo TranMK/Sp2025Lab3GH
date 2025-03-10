@@ -10,7 +10,7 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     -> void;
 
 auto main() -> int {
-  DoublyLinkedList<Part> ll = DoublyLinkedList<Part>(new Part("", "", 0.0, ""));
+  DoublyLinkedList<Part> ll = DoublyLinkedList<Part>(nullptr);
   while (true) {
     print_user_options();
     size_t user_option_idx = get_user_option() - 1;
@@ -65,7 +65,7 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::cout << "Enter the Part Price: ";
     std::string part_price_str;
     std::getline(std::cin, part_price_str);
-    size_t part_price = std::stod(part_price_str);
+    double part_price = std::stod(part_price_str);
     std::cout << "Enter the Part UOM: ";
     std::string part_uom;
     std::getline(std::cin, part_uom);
@@ -86,14 +86,18 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::cout << "Enter the Part Price: ";
     std::string part_price_str;
     std::getline(std::cin, part_price_str);
-    size_t part_price = std::stod(part_price_str);
+    double part_price = std::stod(part_price_str);
     std::cout << "Enter the Part UOM: ";
     std::string part_uom;
     std::getline(std::cin, part_uom);
 
-    Part *part_to_find =
-        new Part(part_sku, part_description, part_price, part_uom);
-    ll.get_item(part_to_find);
+    try {
+      Part *part_to_find =
+          new Part(part_sku, part_description, part_price, part_uom);
+      ll.get_item(part_to_find);
+    } catch (ItemNotFound e) {
+      std::cout << e.display() << std::endl;
+    }
     break;
   }
   case 2: {
@@ -107,7 +111,7 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::cout << "Enter the Part Price: ";
     std::string part_price_str;
     std::getline(std::cin, part_price_str);
-    size_t part_price = std::stod(part_price_str);
+    double part_price = std::stod(part_price_str);
     std::cout << "Enter the Part UOM: ";
     std::string part_uom;
     std::getline(std::cin, part_uom);
