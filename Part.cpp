@@ -12,7 +12,7 @@ auto Part::Available(double date) -> bool {
 }
 
 auto Part::operator<(Part other) -> bool {
-  std::string desc = GetPartInfo(other);
+  std::string desc = other.GetPartInfo();
   std::string SKU2;
   while (desc[0] != '\n') {
     SKU2.push_back(desc[0]);
@@ -22,7 +22,7 @@ auto Part::operator<(Part other) -> bool {
 }
 
 auto Part::operator>(Part other) -> bool {
-  std::string desc = GetPartInfo(other);
+  std::string desc = other.GetPartInfo();
   std::string SKU2;
   while (desc[0] != '\n') {
     SKU2.push_back(desc[0]);
@@ -32,7 +32,7 @@ auto Part::operator>(Part other) -> bool {
 }
 
 auto Part::operator==(Part other) -> bool {
-  std::string desc = GetPartInfo(other);
+  std::string desc = other.GetPartInfo();
   std::string SKU2;
   while (desc[0] != '\n') {
     SKU2.push_back(desc[0]);
