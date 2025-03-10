@@ -1,21 +1,28 @@
-#include "LinkedList.hpp"
+#include <cassert>
+
 #include "Errors.hpp"
+#include "LinkedList.hpp"
+#include "Part.hpp"
 
 template <class T> auto DoublyLinkedList<T>::add_item(T *value_to_add) -> void {
   LinkedListNode<T> *node_before_insertion = head;
-  while (node_before_insertion->next->get_value() < value_to_add) {
+  while (node_before_insertion != nullptr &&
+         node_before_insertion->get_next() != nullptr &&
+         node_before_insertion->get_next()->get_value() < value_to_add) {
     node_before_insertion = node_before_insertion->get_next();
   }
 
-  LinkedListNode<T> *node_to_add = new LinkedListNode(value_to_add);
+  auto *node_to_add = new LinkedListNode(value_to_add);
   // Set node.
   node_to_add->set_next(node_before_insertion->get_next());
   node_to_add->set_prev(node_before_insertion);
   // Set node before.
   node_before_insertion->set_next(node_to_add);
   // Set node after.
-  node_to_add->get_next()->set_prev(node_to_add);
+  if (node_to_add->get_next() != nullptr)
+    node_to_add->get_next()->set_prev(node_to_add);
 }
+
 template <class T>
 auto DoublyLinkedList<T>::get_item(T *value_to_find) -> LinkedListNode<T> * {
   // TODO(Ansh): Refactor later. Shares most lines with
@@ -27,8 +34,8 @@ auto DoublyLinkedList<T>::get_item(T *value_to_find) -> LinkedListNode<T> * {
   }
   if (curr_node->get_value() == value_to_find) {
     // Join the two nodes on either side.
-    curr_node->get_prev()->set_next(curr_node->next());
-    curr_node->get_next()->set_prev(curr_node->prev());
+    curr_node->get_prev()->set_next(curr_node->get_next());
+    curr_node->get_next()->set_prev(curr_node->get_prev());
     return curr_node;
   }
   return nullptr;
@@ -47,6 +54,7 @@ auto DoublyLinkedList<T>::is_in_list(T *value_to_find) -> bool {
   }
   return false;
 }
+
 template <class T> auto DoublyLinkedList<T>::is_empty() -> bool {
   return size == 0;
 }
@@ -57,12 +65,14 @@ template <class T> auto DoublyLinkedList<T>::see_next() -> LinkedListNode<T> * {
   }
   return node_cursor->get_next();
 }
+
 template <class T> auto DoublyLinkedList<T>::see_prev() -> LinkedListNode<T> * {
   if (size == 0) {
     throw SeeEmptyListError{};
   }
   return node_cursor->get_prev();
 }
+
 template <class T>
 auto DoublyLinkedList<T>::see_at(size_t index) -> LinkedListNode<T> * {
   if (size - 1 < index) {
@@ -76,7 +86,31 @@ auto DoublyLinkedList<T>::see_at(size_t index) -> LinkedListNode<T> * {
 
   return curr_node;
 }
+
 template <class T> auto DoublyLinkedList<T>::reset() -> void {
-  LinkedListNode<T> node_cursor = LinkedListNode<T>(nullptr);
+  node_cursor = new LinkedListNode<T>(nullptr);
   node_cursor->set_next(head);
 }
+
+template <class T>
+auto DoublyLinkedList<T>::operator<(DoublyLinkedList<T> other) -> bool {
+  assert(node_cursor != nullptr);
+  assert(other.node_cursor != nullptr);
+  return node_cursor->get_value() < other.node_cursor->get_value();
+}
+
+template <class T>
+auto DoublyLinkedList<T>::operator>(DoublyLinkedList<T> other) -> bool {
+  assert(node_cursor != nullptr);
+  assert(other.node_cursor != nullptr);
+  return node_cursor->get_value() > other.node_cursor->get_value();
+}
+
+template <class T>
+auto DoublyLinkedList<T>::operator==(DoublyLinkedList<T> other) -> bool {
+  if (node_cursor == nullptr || other.node_cursor == nullptr)
+    return node_cursor == other.node_cursor;
+  return node_cursor->get_value() == other.node_cursor->get_value();
+}
+
+template class DoublyLinkedList<Part>;

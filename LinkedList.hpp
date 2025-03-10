@@ -11,15 +11,15 @@ private:
   size_t size = 0;
 
 public:
-  DoublyLinkedList(T init_value)
-      : head(LinkedListNode(init_value)), node_cursor(head), size(1) {}
+  DoublyLinkedList(T *init_value)
+      : head(new LinkedListNode(init_value)), node_cursor(head), size(1) {}
   ~DoublyLinkedList() {
     size = 0;
-
-    T *curr_node = head;
+    LinkedListNode<T> *curr_node = head;
     while (curr_node != nullptr) {
-      delete (curr_node);
-      curr_node = curr_node->next;
+      LinkedListNode<T> *curr_ref = curr_node;
+      curr_node = curr_node->get_next();
+      delete (curr_ref);
     }
   }
 
@@ -34,4 +34,9 @@ public:
   auto see_prev() -> LinkedListNode<T> *;
   auto see_at(size_t index) -> LinkedListNode<T> *;
   auto reset() -> void;
+
+  // Operator overloads.
+  auto operator<(DoublyLinkedList other) -> bool;
+  auto operator>(DoublyLinkedList other) -> bool;
+  auto operator==(DoublyLinkedList other) -> bool;
 };
