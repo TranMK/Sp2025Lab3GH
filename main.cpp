@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "Errors.hpp"
 #include "LinkedList.hpp"
 #include "Part.hpp"
 
@@ -148,8 +149,13 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::cout << "Enter the index to peek at: ";
     std::getline(std::cin, idx_to_see_at_str);
     size_t idx_to_see_at = std::stod(idx_to_see_at_str);
-    std::cout << "List element at " << idx_to_see_at << " = "
-              << ll.see_at(idx_to_see_at) << std::endl;
+    try {
+      LinkedListNode<Part> *item_at_idx = ll.see_at(idx_to_see_at);
+      std::cout << "List element at " << idx_to_see_at << " = "
+                << item_at_idx->get_value()->GetPartInfo() << std::endl;
+    } catch (OutOfBoundsError e) {
+      std::cout << e.display();
+    }
     break;
   }
   case 8: {

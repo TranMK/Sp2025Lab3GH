@@ -21,6 +21,8 @@ template <class T> auto DoublyLinkedList<T>::add_item(T *value_to_add) -> void {
   // Set node after.
   if (node_to_add->get_next() != nullptr)
     node_to_add->get_next()->set_prev(node_to_add);
+
+  ++size;
 }
 
 template <class T>
@@ -36,6 +38,7 @@ auto DoublyLinkedList<T>::get_item(T *value_to_find) -> LinkedListNode<T> * {
     // Join the two nodes on either side.
     curr_node->get_prev()->set_next(curr_node->get_next());
     curr_node->get_next()->set_prev(curr_node->get_prev());
+    --size;
     return curr_node;
   }
   return nullptr;
@@ -76,7 +79,7 @@ template <class T> auto DoublyLinkedList<T>::see_prev() -> LinkedListNode<T> * {
 template <class T>
 auto DoublyLinkedList<T>::see_at(size_t index) -> LinkedListNode<T> * {
   if (size - 1 < index) {
-    throw nullptr;
+    throw OutOfBoundsError();
   }
 
   LinkedListNode<T> *curr_node = head;
