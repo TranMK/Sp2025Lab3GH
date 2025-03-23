@@ -1,5 +1,5 @@
 #include <cassert>
-
+#include <iostream>
 #include "Errors.hpp"
 #include "LinkedList.hpp"
 #include "Part.hpp"
@@ -63,6 +63,20 @@ auto DoublyLinkedList<T>::is_in_list(T *value_to_find) -> bool {
 
 template <class T> auto DoublyLinkedList<T>::is_empty() -> bool {
   return size == 0;
+}
+
+template <class T> auto DoublyLinkedList<T>::display() -> void {
+  LinkedListNode<T> *curr_node = head;
+  if(size==1){
+    std::cout<<"**************************************"<<std::endl;
+    std::cout<<"*******      List is empty.    *******" << std::endl;
+    std::cout<<"**************************************"<<std::endl;
+    return;
+  }
+  while (curr_node!= nullptr) {
+    curr_node->get_value()->Display();
+    curr_node = curr_node->get_next();
+  }
 }
 
 template <class T> auto DoublyLinkedList<T>::see_next() -> LinkedListNode<T> * {

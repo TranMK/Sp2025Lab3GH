@@ -21,9 +21,9 @@ auto main() -> int {
 }
 
 auto print_user_options() -> void {
-  constexpr std::array<const char *, 9> LL_OPTIONS = {
+  constexpr std::array<const char *, 10> LL_OPTIONS = {
       "add_item", "get_item", "is_in_list", "is_empty", "get_size",
-      "see_next", "see_prev", "see_at",     "reset"};
+      "see_next", "see_prev", "see_at", "display", "reset"};
 
   std::cout << std::endl;
   std::cout << "------------------- " << std::endl << std::endl;
@@ -163,6 +163,11 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     break;
   }
   case 8: {
+    // "display"
+    ll.display();
+    break;
+  }
+  case 9: {
     // "reset"
     ll.reset();
     std::cout << "Reset list." << std::endl;

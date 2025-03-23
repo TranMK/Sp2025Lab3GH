@@ -1,5 +1,5 @@
 #include "Part.hpp"
-
+#include <iostream>
 auto Part::Available(double date) -> bool {
   // Unconditionally true if there's quantity on hand.
   return GetQuantityOnHand();
@@ -9,6 +9,19 @@ auto Part::Available(double date) -> bool {
     return true;
   }
   return false;
+}
+
+auto Part::Display() -> void {
+  std::cout<<"**************************************"<<std::endl;
+  std::cout<<"*****         Part Information   *****"<<std::endl;
+  std::cout<<"SKU: "<<Part::SKU<<std::endl;
+  std::cout<<"Description: "<<Part::Description<<std::endl;
+  std::cout<<"Price: $"<<Price<<UOM<<std::endl;
+  std::cout<<"Quantity on Hand: "<<QuantityOnHand<<std::endl;
+  if(!QuantityOnHand){
+    std::cout<<"Lead Time: "<<LeadTime<<std::endl;
+  }
+  std::cout<<"**************************************"<<std::endl;
 }
 
 auto Part::operator<(Part other) -> bool {

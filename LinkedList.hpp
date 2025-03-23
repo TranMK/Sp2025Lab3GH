@@ -29,6 +29,7 @@ public:
   auto is_in_list(T *value_to_find) -> bool;
   auto is_empty() -> bool;
   auto get_size() -> size_t { return size; };
+  auto display() -> void;
 
   auto see_next() -> LinkedListNode<T> *;
   auto see_prev() -> LinkedListNode<T> *;

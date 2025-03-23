@@ -21,6 +21,7 @@ public:
   auto GetPrice() -> double { return Price; };
   auto GetQuantityOnHand() -> bool { return QuantityOnHand > 0; };
   auto Available(double date) -> bool;
+  auto Display() -> void;
 
   auto operator>(Part other) -> bool;
   auto operator<(Part other) -> bool;
