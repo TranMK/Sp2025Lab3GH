@@ -1,10 +1,10 @@
+#include "LinkedList.hpp"
+#include "Errors.hpp"
+#include "Part.hpp"
 #include <cassert>
 #include <iostream>
-#include "Errors.hpp"
-#include "LinkedList.hpp"
-#include "Part.hpp"
 
-template <class T> auto DoublyLinkedList<T>::add_item(T *value_to_add) -> void {
+template <class T> auto DoublyLinkedList<T>::add_item(T value_to_add) -> void {
   LinkedListNode<T> *node_before_insertion = head;
   while (node_before_insertion != nullptr &&
          node_before_insertion->get_next() != nullptr &&
@@ -13,25 +13,29 @@ template <class T> auto DoublyLinkedList<T>::add_item(T *value_to_add) -> void {
   }
 
   auto *node_to_add = new LinkedListNode(value_to_add);
-  // Set node.
-  node_to_add->set_next(node_before_insertion->get_next());
-  node_to_add->set_prev(node_before_insertion);
-  // Set node before.
-  node_before_insertion->set_next(node_to_add);
-  // Set node after.
-  if (node_to_add->get_next() != nullptr)
-    node_to_add->get_next()->set_prev(node_to_add);
+  if (node_before_insertion == nullptr) {
+    head = node_to_add;
+  } else {
+    // Set node.
+    node_to_add->set_next(node_before_insertion->get_next());
+    node_to_add->set_prev(node_before_insertion);
+    // Set node before.
+    node_before_insertion->set_next(node_to_add);
+    // Set node after.
+    if (node_to_add->get_next() != nullptr)
+      node_to_add->get_next()->set_prev(node_to_add);
+  };
 
   ++size;
 }
 
 template <class T>
-auto DoublyLinkedList<T>::get_item(T *value_to_find) -> LinkedListNode<T> * {
+auto DoublyLinkedList<T>::get_item(T value_to_find) -> LinkedListNode<T> * {
   // TODO(Ansh): Refactor later. Shares most lines with
   // `DoublyLinkedList::is_in_list()`.
   LinkedListNode<T> *curr_node = head;
   while (curr_node->get_next() != nullptr &&
-         curr_node->get_value() != value_to_find) {
+         !(curr_node->get_value() == value_to_find)) {
     curr_node = curr_node->get_next();
   }
   if (curr_node->get_value() == value_to_find) {
@@ -48,10 +52,10 @@ auto DoublyLinkedList<T>::get_item(T *value_to_find) -> LinkedListNode<T> * {
 }
 
 template <class T>
-auto DoublyLinkedList<T>::is_in_list(T *value_to_find) -> bool {
+auto DoublyLinkedList<T>::is_in_list(T value_to_find) -> bool {
   LinkedListNode<T> *curr_node = head;
   while (curr_node->get_next() != nullptr &&
-         curr_node->get_value() != value_to_find) {
+         !(curr_node->get_value() == value_to_find)) {
     curr_node = curr_node->get_next();
   }
   if (curr_node->get_value() == value_to_find) {
@@ -67,14 +71,14 @@ template <class T> auto DoublyLinkedList<T>::is_empty() -> bool {
 
 template <class T> auto DoublyLinkedList<T>::display() -> void {
   LinkedListNode<T> *curr_node = head;
-  if(size==1){
-    std::cout<<"**************************************"<<std::endl;
-    std::cout<<"*******      List is empty.    *******" << std::endl;
-    std::cout<<"**************************************"<<std::endl;
+  if (size == 1) {
+    std::cout << "**************************************" << std::endl;
+    std::cout << "*******      List is empty.    *******" << std::endl;
+    std::cout << "**************************************" << std::endl;
     return;
   }
-  while (curr_node!= nullptr) {
-    curr_node->get_value()->Display();
+  while (curr_node != nullptr) {
+    curr_node->get_value().Display();
     curr_node = curr_node->get_next();
   }
 }
@@ -108,7 +112,9 @@ auto DoublyLinkedList<T>::see_at(size_t index) -> LinkedListNode<T> * {
 }
 
 template <class T> auto DoublyLinkedList<T>::reset() -> void {
-  node_cursor = new LinkedListNode<T>(nullptr);
+  if (head->get_prev() != nullptr)
+    node_cursor = head->get_prev();
+  node_cursor = new LinkedListNode<T>();
   node_cursor->set_next(head);
 }
 

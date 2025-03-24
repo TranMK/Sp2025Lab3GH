@@ -12,6 +12,7 @@ class Part {
   double LeadTime;
 
 public:
+  Part() = default;
   Part(std::string SKU, std::string Description, double Price, std::string UOM,
        int QuantityOnHand = 0)
       : SKU(std::move(SKU)), Description(std::move(Description)), Price(Price),

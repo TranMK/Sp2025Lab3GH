@@ -11,7 +11,8 @@ private:
   size_t size = 0;
 
 public:
-  DoublyLinkedList(T *init_value)
+  DoublyLinkedList() = default;
+  DoublyLinkedList(T init_value)
       : head(new LinkedListNode(init_value)), node_cursor(head), size(1) {}
   ~DoublyLinkedList() {
     size = 0;
@@ -23,10 +24,10 @@ public:
     }
   }
 
-  auto add_item(T *value_to_add) -> void;
-  auto get_item(T *value_to_find) -> LinkedListNode<T> *;
+  auto add_item(T value_to_add) -> void;
+  auto get_item(T value_to_find) -> LinkedListNode<T> *;
 
-  auto is_in_list(T *value_to_find) -> bool;
+  auto is_in_list(T value_to_find) -> bool;
   auto is_empty() -> bool;
   auto get_size() -> size_t { return size; };
   auto display() -> void;

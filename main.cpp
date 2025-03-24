@@ -1,4 +1,5 @@
 #include <iostream>
+#include <array>
 
 #include "Errors.hpp"
 #include "LinkedList.hpp"
@@ -10,7 +11,7 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     -> void;
 
 auto main() -> int {
-  DoublyLinkedList<Part> ll = DoublyLinkedList<Part>(nullptr);
+  DoublyLinkedList<Part> ll = DoublyLinkedList<Part>();
   while (true) {
     print_user_options();
     size_t user_option_idx = get_user_option() - 1;
@@ -21,7 +22,7 @@ auto main() -> int {
 }
 
 auto print_user_options() -> void {
-  constexpr std::array<const char *, 10> LL_OPTIONS = {
+  constexpr std::array<const char *, 10> LL_OPTIONS {
       "add_item", "get_item", "is_in_list", "is_empty", "get_size",
       "see_next", "see_prev", "see_at", "display", "reset"};
 
@@ -70,8 +71,8 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::string part_uom;
     std::getline(std::cin, part_uom);
 
-    Part *part_to_add =
-        new Part(part_sku, part_description, part_price, part_uom);
+    Part part_to_add =
+        Part(part_sku, part_description, part_price, part_uom);
     ll.add_item(part_to_add);
     break;
   }
@@ -92,8 +93,8 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::getline(std::cin, part_uom);
 
     try {
-      Part *part_to_find =
-          new Part(part_sku, part_description, part_price, part_uom);
+      Part part_to_find =
+          Part(part_sku, part_description, part_price, part_uom);
       ll.get_item(part_to_find);
     } catch (ItemNotFound e) {
       std::cout << e.display() << std::endl;
@@ -116,8 +117,8 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::string part_uom;
     std::getline(std::cin, part_uom);
 
-    Part *part_to_find =
-        new Part(part_sku, part_description, part_price, part_uom);
+    Part part_to_find =
+        Part(part_sku, part_description, part_price, part_uom);
     ll.is_in_list(part_to_find);
     break;
   }
@@ -156,7 +157,7 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     try {
       LinkedListNode<Part> *item_at_idx = ll.see_at(idx_to_see_at);
       std::cout << "List element at " << idx_to_see_at << " = "
-                << item_at_idx->get_value()->GetPartInfo() << std::endl;
+                << item_at_idx->get_value().GetPartInfo() << std::endl;
     } catch (OutOfBoundsError e) {
       std::cout << e.display();
     }
