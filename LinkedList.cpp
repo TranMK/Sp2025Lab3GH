@@ -1,18 +1,25 @@
-#include "LinkedList.hpp"
-#include "Errors.hpp"
-#include "Part.hpp"
 #include <cassert>
 #include <iostream>
 
+#include "Errors.hpp"
+#include "LinkedList.hpp"
+#include "Part.hpp"
+
 template <class T> auto DoublyLinkedList<T>::add_item(T value_to_add) -> void {
+  auto *node_to_add = new LinkedListNode(value_to_add);
+
+  if (node_cursor == head and head->get_value() == Part{}) {
+    head = node_to_add;
+    node_cursor = head;
+    return;
+  }
+
   LinkedListNode<T> *node_before_insertion = head;
   while (node_before_insertion != nullptr &&
          node_before_insertion->get_next() != nullptr &&
          node_before_insertion->get_next()->get_value() < value_to_add) {
     node_before_insertion = node_before_insertion->get_next();
   }
-
-  auto *node_to_add = new LinkedListNode(value_to_add);
   if (node_before_insertion == nullptr) {
     head = node_to_add;
   } else {
@@ -27,6 +34,11 @@ template <class T> auto DoublyLinkedList<T>::add_item(T value_to_add) -> void {
   };
 
   ++size;
+
+  // Add reference to `node_cursor` if the list is empty and the first item has
+  // been added.
+  // if (size == 1)
+  //   this->reset();
 }
 
 template <class T>
@@ -95,18 +107,26 @@ template <class T> auto DoublyLinkedList<T>::see_next() -> LinkedListNode<T> * {
   if (size == 0) {
     throw SeeEmptyListError{};
   }
-  if (node_cursor == nullptr)
-    return nullptr;
-  return node_cursor->get_next();
+  if (node_cursor->get_next() == nullptr)
+    throw OutOfBoundsError{};
+
+  auto after_cursor = node_cursor->get_next();
+  node_cursor = node_cursor->get_next();
+  return after_cursor;
 }
 
 template <class T> auto DoublyLinkedList<T>::see_prev() -> LinkedListNode<T> * {
   if (size == 0) {
     throw SeeEmptyListError{};
   }
-  if (node_cursor == nullptr)
-    return nullptr;
-  return node_cursor->get_prev();
+  if (node_cursor->get_prev() == nullptr)
+    throw OutOfBoundsError{};
+
+  auto before_cursor = node_cursor->get_prev();
+  if (before_cursor->get_value() == Part{})
+    throw OutOfBoundsError{};
+  node_cursor = node_cursor->get_prev();
+  return before_cursor;
 }
 
 template <class T>
@@ -129,6 +149,7 @@ template <class T> auto DoublyLinkedList<T>::reset() -> void {
     node_cursor = head->get_prev();
   node_cursor = new LinkedListNode<T>();
   node_cursor->set_next(head);
+  head->set_prev(node_cursor);
 }
 
 template <class T>

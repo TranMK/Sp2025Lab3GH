@@ -3,12 +3,13 @@
 
 #include "Errors.hpp"
 #include "LinkedList.hpp"
+#include "LinkedListNode.hpp"
 #include "Part.hpp"
 
 auto print_user_options() -> void;
 auto get_user_option() -> int;
-auto handle_user_option(DoublyLinkedList<Part> &ll,
-                        int user_option_idx) -> void;
+auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
+    -> void;
 
 auto main() -> int {
   DoublyLinkedList<Part> ll = DoublyLinkedList<Part>();
@@ -49,8 +50,8 @@ auto get_user_option() -> int {
   return std::stoi(user_option_string);
 }
 
-auto handle_user_option(DoublyLinkedList<Part> &ll,
-                        int user_option_idx) -> void {
+auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
+    -> void {
   switch (user_option_idx) {
   case -2:
     // Quit.
@@ -144,12 +145,26 @@ auto handle_user_option(DoublyLinkedList<Part> &ll,
   }
   case 5: {
     // "see_next"
-    std::cout << "Next: " << ll.see_next() << std::endl;
+    try {
+      std::cout << "Next: " << std::endl;
+      ll.see_next()->get_value().Display();
+    } catch (OutOfBoundsError e) {
+      std::cout << e.display();
+    } catch (SeeEmptyListError e) {
+      std::cout << e.display();
+    }
     break;
   }
   case 6: {
     // "see_prev"
-    std::cout << "Previous: " << ll.see_prev() << std::endl;
+    try {
+      std::cout << "Previous: " << std::endl;
+      ll.see_prev()->get_value().Display();
+    } catch (OutOfBoundsError e) {
+      std::cout << e.display();
+    } catch (SeeEmptyListError e) {
+      std::cout << e.display();
+    }
     break;
   }
   case 7: {
