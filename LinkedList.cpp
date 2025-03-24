@@ -71,14 +71,20 @@ template <class T> auto DoublyLinkedList<T>::is_empty() -> bool {
 
 template <class T> auto DoublyLinkedList<T>::display() -> void {
   LinkedListNode<T> *curr_node = head;
-  if (size == 1) {
+  if (size == 0) {
     std::cout << "**************************************" << std::endl;
-    std::cout << "*******      List is empty.    *******" << std::endl;
+    std::cout << "*           List is empty.           *" << std::endl;
     std::cout << "**************************************" << std::endl;
     return;
   }
+
   while (curr_node != nullptr) {
     curr_node->get_value().Display();
+    if (curr_node->get_next() != nullptr) {
+      std::cout << "\t\t  |" << std::endl;
+      std::cout << "\t\t  |" << std::endl;
+    }
+
     curr_node = curr_node->get_next();
   }
 }
