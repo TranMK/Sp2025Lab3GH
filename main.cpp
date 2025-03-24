@@ -1,5 +1,5 @@
-#include <iostream>
 #include <array>
+#include <iostream>
 
 #include "Errors.hpp"
 #include "LinkedList.hpp"
@@ -7,8 +7,8 @@
 
 auto print_user_options() -> void;
 auto get_user_option() -> int;
-auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
-    -> void;
+auto handle_user_option(DoublyLinkedList<Part> &ll,
+                        int user_option_idx) -> void;
 
 auto main() -> int {
   DoublyLinkedList<Part> ll = DoublyLinkedList<Part>();
@@ -22,9 +22,9 @@ auto main() -> int {
 }
 
 auto print_user_options() -> void {
-  constexpr std::array<const char *, 10> LL_OPTIONS {
+  constexpr std::array<const char *, 10> LL_OPTIONS{
       "add_item", "get_item", "is_in_list", "is_empty", "get_size",
-      "see_next", "see_prev", "see_at", "display", "reset"};
+      "see_next", "see_prev", "see_at",     "display",  "reset"};
 
   std::cout << std::endl;
   std::cout << "------------------- " << std::endl << std::endl;
@@ -49,8 +49,8 @@ auto get_user_option() -> int {
   return std::stoi(user_option_string);
 }
 
-auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
-    -> void {
+auto handle_user_option(DoublyLinkedList<Part> &ll,
+                        int user_option_idx) -> void {
   switch (user_option_idx) {
   case -2:
     // Quit.
@@ -71,8 +71,7 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::string part_uom;
     std::getline(std::cin, part_uom);
 
-    Part part_to_add =
-        Part(part_sku, part_description, part_price, part_uom);
+    Part part_to_add = Part(part_sku, part_description, part_price, part_uom);
     ll.add_item(part_to_add);
     break;
   }
@@ -117,9 +116,14 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::string part_uom;
     std::getline(std::cin, part_uom);
 
-    Part part_to_find =
-        Part(part_sku, part_description, part_price, part_uom);
-    ll.is_in_list(part_to_find);
+    Part part_to_find = Part(part_sku, part_description, part_price, part_uom);
+    if (ll.is_in_list(part_to_find)) {
+      std::cout << "A part with that description is in the list." << std::endl;
+    } else {
+      std::cout << "A part with that description is not in the list."
+                << std::endl;
+    }
+
     break;
   }
   case 3: {
@@ -140,12 +144,12 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
   }
   case 5: {
     // "see_next"
-    std::cout << "List length: " << ll.see_next() << std::endl;
+    std::cout << "Next: " << ll.see_next() << std::endl;
     break;
   }
   case 6: {
     // "see_prev"
-    std::cout << "List length: " << ll.see_prev() << std::endl;
+    std::cout << "Previous: " << ll.see_prev() << std::endl;
     break;
   }
   case 7: {
@@ -156,7 +160,7 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     size_t idx_to_see_at = std::stod(idx_to_see_at_str);
     try {
       LinkedListNode<Part> *item_at_idx = ll.see_at(idx_to_see_at);
-      std::cout << "List element at " << idx_to_see_at << " = "
+      std::cout << "List element at " << idx_to_see_at << " = " << std::endl
                 << item_at_idx->get_value().GetPartInfo() << std::endl;
     } catch (OutOfBoundsError e) {
       std::cout << e.display();
@@ -165,6 +169,7 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
   }
   case 8: {
     // "display"
+    std::cout << std::endl;
     ll.display();
     break;
   }

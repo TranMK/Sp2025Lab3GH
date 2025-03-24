@@ -19,13 +19,14 @@ auto Part::Display() -> void {
   std::cout << "           Part Information           " << std::endl;
   std::cout << std::setw(21) << " SKU: " << SKU << std::endl;
   std::cout << std::setw(21) << " Description: " << Description << std::endl;
-  std::cout << std::setw(21) << " Price: $" << Price << UOM << std::endl;
+  std::cout << std::setw(21) << " Price: $" << Price << std::endl;
   std::cout << std::setw(21) << " Quantity on Hand: " << QuantityOnHand
             << std::endl;
-  if (!QuantityOnHand) {
+  if (QuantityOnHand == 0) {
     std::cout << std::fixed << std::setprecision(2);
     std::cout << std::setw(21) << "Lead Time: " << LeadTime << std::endl;
   }
+  std::cout << std::setw(21) << " UOM: " << UOM << std::endl;
   std::cout << "**************************************" << std::endl;
 }
 

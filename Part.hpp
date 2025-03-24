@@ -18,7 +18,7 @@ public:
       : SKU(std::move(SKU)), Description(std::move(Description)), Price(Price),
         UOM(std::move(UOM)), QuantityOnHand(QuantityOnHand) {};
 
-  auto GetPartInfo() -> std::string { return SKU + "\n" + Description; };
+  auto GetPartInfo() -> std::string { return "SKU: " + SKU + "\n" + "Description: " + Description; };
   auto GetPrice() -> double { return Price; };
   auto GetQuantityOnHand() -> bool { return QuantityOnHand > 0; };
   auto Available(double date) -> bool;

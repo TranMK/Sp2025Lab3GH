@@ -53,13 +53,15 @@ auto DoublyLinkedList<T>::get_item(T value_to_find) -> LinkedListNode<T> * {
 
 template <class T>
 auto DoublyLinkedList<T>::is_in_list(T value_to_find) -> bool {
+  if (size == 0)
+    return false;
+
   LinkedListNode<T> *curr_node = head;
   while (curr_node->get_next() != nullptr &&
          !(curr_node->get_value() == value_to_find)) {
     curr_node = curr_node->get_next();
   }
   if (curr_node->get_value() == value_to_find) {
-    // Join the two nodes on either side.
     return true;
   }
   return false;
@@ -93,6 +95,8 @@ template <class T> auto DoublyLinkedList<T>::see_next() -> LinkedListNode<T> * {
   if (size == 0) {
     throw SeeEmptyListError{};
   }
+  if (node_cursor == nullptr)
+    return nullptr;
   return node_cursor->get_next();
 }
 
@@ -100,18 +104,21 @@ template <class T> auto DoublyLinkedList<T>::see_prev() -> LinkedListNode<T> * {
   if (size == 0) {
     throw SeeEmptyListError{};
   }
+  if (node_cursor == nullptr)
+    return nullptr;
   return node_cursor->get_prev();
 }
 
 template <class T>
 auto DoublyLinkedList<T>::see_at(size_t index) -> LinkedListNode<T> * {
-  if (size - 1 < index) {
+  if (size - 1 < index || size < 0) {
     throw OutOfBoundsError();
   }
 
   LinkedListNode<T> *curr_node = head;
   for (size_t i = 0; i < index; i++) {
-    curr_node = curr_node->get_next();
+    if (curr_node != nullptr && curr_node->get_next() != nullptr)
+      curr_node = curr_node->get_next();
   }
 
   return curr_node;
