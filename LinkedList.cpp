@@ -35,11 +35,6 @@ template <class T> auto DoublyLinkedList<T>::add_item(T value_to_add) -> void {
   };
 
   ++size;
-
-  // Add reference to `node_cursor` if the list is empty and the first item has
-  // been added.
-  // if (size == 1)
-  //   this->reset();
 }
 
 template <class T>
@@ -151,8 +146,10 @@ auto DoublyLinkedList<T>::see_at(size_t index) -> LinkedListNode<T> * {
 }
 
 template <class T> auto DoublyLinkedList<T>::reset() -> void {
-  if (head->get_prev() != nullptr)
+  if (head->get_prev() != nullptr) {
     node_cursor = head->get_prev();
+    return;
+  }
   node_cursor = new LinkedListNode<T>();
   node_cursor->set_next(head);
   head->set_prev(node_cursor);
