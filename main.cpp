@@ -67,12 +67,21 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::cout << "Enter the Part Price: ";
     std::string part_price_str;
     std::getline(std::cin, part_price_str);
-    double part_price = std::stod(part_price_str);
+    double part_price = std::stoi(part_price_str);
     std::cout << "Enter the Part UOM: ";
     std::string part_uom;
     std::getline(std::cin, part_uom);
+    std::cout << "Enter the Part Quantity: ";
+    std::string part_quantity_str;
+    std::getline(std::cin, part_quantity_str);
+    size_t part_quantity = std::stoi(part_quantity_str);
+    std::cout << "Enter the Part Lead Time: ";
+    std::string part_lead_time_str;
+    std::getline(std::cin, part_lead_time_str);
+    size_t part_lead_time = std::stoi(part_lead_time_str);
 
-    Part part_to_add = Part(part_sku, part_description, part_price, part_uom);
+    Part part_to_add = Part(part_sku, part_description, part_price, part_uom,
+                            part_quantity, part_lead_time);
     ll.add_item(part_to_add);
     break;
   }
@@ -87,14 +96,22 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::cout << "Enter the Part Price: ";
     std::string part_price_str;
     std::getline(std::cin, part_price_str);
-    double part_price = std::stod(part_price_str);
+    double part_price = std::stoi(part_price_str);
     std::cout << "Enter the Part UOM: ";
     std::string part_uom;
     std::getline(std::cin, part_uom);
+    std::cout << "Enter the Part Quantity: ";
+    std::string part_quantity_str;
+    std::getline(std::cin, part_quantity_str);
+    size_t part_quantity = std::stoi(part_quantity_str);
+    std::cout << "Enter the Part Lead Time: ";
+    std::string part_lead_time_str;
+    std::getline(std::cin, part_lead_time_str);
+    size_t part_lead_time = std::stoi(part_lead_time_str);
 
     try {
-      Part part_to_find =
-          Part(part_sku, part_description, part_price, part_uom);
+      Part part_to_find = Part(part_sku, part_description, part_price, part_uom,
+                               part_quantity, part_lead_time);
       ll.get_item(part_to_find);
     } catch (ItemNotFound e) {
       std::cout << e.display() << std::endl;
@@ -112,12 +129,21 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::cout << "Enter the Part Price: ";
     std::string part_price_str;
     std::getline(std::cin, part_price_str);
-    double part_price = std::stod(part_price_str);
+    double part_price = std::stoi(part_price_str);
     std::cout << "Enter the Part UOM: ";
     std::string part_uom;
     std::getline(std::cin, part_uom);
+    std::cout << "Enter the Part Quantity: ";
+    std::string part_quantity_str;
+    std::getline(std::cin, part_quantity_str);
+    size_t part_quantity = std::stoi(part_quantity_str);
+    std::cout << "Enter the Part Lead Time: ";
+    std::string part_lead_time_str;
+    std::getline(std::cin, part_lead_time_str);
+    size_t part_lead_time = std::stoi(part_lead_time_str);
 
-    Part part_to_find = Part(part_sku, part_description, part_price, part_uom);
+    Part part_to_find = Part(part_sku, part_description, part_price, part_uom,
+                             part_quantity, part_lead_time);
     if (ll.is_in_list(part_to_find)) {
       std::cout << "A part with that description is in the list." << std::endl;
     } else {
@@ -147,7 +173,7 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     // "see_next"
     try {
       std::cout << "Next: " << std::endl;
-      ll.see_next()->get_value().Display();
+      ll.see_next()->get_value()->Display();
     } catch (OutOfBoundsError e) {
       std::cout << e.display();
     } catch (SeeEmptyListError e) {
@@ -159,7 +185,7 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     // "see_prev"
     try {
       std::cout << "Previous: " << std::endl;
-      ll.see_prev()->get_value().Display();
+      ll.see_prev()->get_value()->Display();
     } catch (OutOfBoundsError e) {
       std::cout << e.display();
     } catch (SeeEmptyListError e) {
@@ -172,11 +198,11 @@ auto handle_user_option(DoublyLinkedList<Part> &ll, int user_option_idx)
     std::string idx_to_see_at_str;
     std::cout << "Enter the index to peek at: ";
     std::getline(std::cin, idx_to_see_at_str);
-    size_t idx_to_see_at = std::stod(idx_to_see_at_str);
+    size_t idx_to_see_at = std::stoi(idx_to_see_at_str);
     try {
       LinkedListNode<Part> *item_at_idx = ll.see_at(idx_to_see_at);
       std::cout << "List element at " << idx_to_see_at << " = " << std::endl
-                << item_at_idx->get_value().GetPartInfo() << std::endl;
+                << item_at_idx->get_value()->GetPartInfo() << std::endl;
     } catch (OutOfBoundsError e) {
       std::cout << e.display();
     }

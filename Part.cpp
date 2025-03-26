@@ -29,33 +29,3 @@ auto Part::Display() -> void {
   std::cout << std::setw(21) << " UOM: " << UOM << std::endl;
   std::cout << "**************************************" << std::endl;
 }
-
-auto Part::operator<(Part other) -> bool {
-  std::string desc = other.GetPartInfo();
-  std::string SKU2;
-  while (desc[0] != '\n') {
-    SKU2.push_back(desc[0]);
-    desc.erase(0, 1);
-  }
-  return SKU < SKU2;
-}
-
-auto Part::operator>(Part other) -> bool {
-  std::string desc = other.GetPartInfo();
-  std::string SKU2;
-  while (desc[0] != '\n') {
-    SKU2.push_back(desc[0]);
-    desc.erase(0, 1);
-  }
-  return SKU > SKU2;
-}
-
-auto Part::operator==(Part other) -> bool {
-  std::string desc = other.GetPartInfo();
-  std::string SKU2;
-  while (desc[0] != '\n') {
-    SKU2.push_back(desc[0]);
-    desc.erase(0, 1);
-  }
-  return SKU == SKU2;
-}

@@ -13,7 +13,9 @@ private:
 public:
   DoublyLinkedList() = default;
   DoublyLinkedList(T init_value)
-      : head(new LinkedListNode(init_value)), node_cursor(head), size(1) {}
+      : head(new LinkedListNode(new T(init_value))), size(1) {
+    node_cursor = head;
+  }
   ~DoublyLinkedList() {
     size = 0;
     LinkedListNode<T> *curr_node = head;

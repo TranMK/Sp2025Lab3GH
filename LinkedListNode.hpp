@@ -8,9 +8,9 @@ private:
 
 public:
   LinkedListNode() = default;
-  LinkedListNode(T init_value) : value(init_value) {}
+  LinkedListNode(T *init_value) : value(init_value) {}
 
-  auto get_value() -> T* { return value; }
+  auto get_value() -> T * { return value; }
   auto get_next() -> LinkedListNode * { return next; }
   auto get_prev() -> LinkedListNode * { return prev; }
 

@@ -6,18 +6,19 @@
 #include "Part.hpp"
 
 template <class T> auto DoublyLinkedList<T>::add_item(T value_to_add) -> void {
-  auto *node_to_add = new LinkedListNode(value_to_add);
+  auto *node_to_add = new LinkedListNode(new T(value_to_add));
 
-  if (node_cursor == head and head->get_value() == Part{}) {
+  if (size == 0) {
     head = node_to_add;
     node_cursor = head;
+    ++size;
     return;
   }
 
   LinkedListNode<T> *node_before_insertion = head;
   while (node_before_insertion != nullptr &&
          node_before_insertion->get_next() != nullptr &&
-         node_before_insertion->get_next()->get_value() < value_to_add) {
+         *node_before_insertion->get_next()->get_value() < value_to_add) {
     node_before_insertion = node_before_insertion->get_next();
   }
   if (node_before_insertion == nullptr) {
@@ -47,20 +48,25 @@ auto DoublyLinkedList<T>::get_item(T value_to_find) -> LinkedListNode<T> * {
   // `DoublyLinkedList::is_in_list()`.
   LinkedListNode<T> *curr_node = head;
   while (curr_node->get_next() != nullptr &&
-         !(curr_node->get_value() == value_to_find)) {
+         !(*curr_node->get_value() == value_to_find)) {
     curr_node = curr_node->get_next();
   }
-  if (curr_node->get_value() == value_to_find) {
+  if (curr_node->get_value() != nullptr &&
+      *curr_node->get_value() == value_to_find) {
     // Join the two nodes on either side.
     if (curr_node->get_prev() != nullptr)
       curr_node->get_prev()->set_next(curr_node->get_next());
     if (curr_node->get_next() != nullptr)
       curr_node->get_next()->set_prev(curr_node->get_prev());
     --size;
+    if (head == curr_node)
+      head = curr_node->get_next();
+
     return curr_node;
-  } else {
-    throw ItemNotFound();
   }
+
+  // Else.
+  throw ItemNotFound();
 }
 
 template <class T>
@@ -69,11 +75,13 @@ auto DoublyLinkedList<T>::is_in_list(T value_to_find) -> bool {
     return false;
 
   LinkedListNode<T> *curr_node = head;
-  while (curr_node->get_next() != nullptr &&
-         !(curr_node->get_value() == value_to_find)) {
+  while (curr_node != nullptr && curr_node->get_next() != nullptr &&
+         curr_node->get_value() != nullptr &&
+         !(*curr_node->get_value() == value_to_find)) {
     curr_node = curr_node->get_next();
   }
-  if (curr_node->get_value() == value_to_find) {
+  if (curr_node->get_value() != nullptr &&
+      *curr_node->get_value() == value_to_find) {
     return true;
   }
   return false;
@@ -93,7 +101,7 @@ template <class T> auto DoublyLinkedList<T>::display() -> void {
   }
 
   while (curr_node != nullptr) {
-    curr_node->get_value().Display();
+    curr_node->get_value()->Display();
     if (curr_node->get_next() != nullptr) {
       std::cout << "\t\t  |" << std::endl;
       std::cout << "\t\t  |" << std::endl;
@@ -123,8 +131,6 @@ template <class T> auto DoublyLinkedList<T>::see_prev() -> LinkedListNode<T> * {
     throw OutOfBoundsError{};
 
   auto before_cursor = node_cursor->get_prev();
-  if (before_cursor->get_value() == Part{})
-    throw OutOfBoundsError{};
   node_cursor = node_cursor->get_prev();
   return before_cursor;
 }
