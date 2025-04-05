@@ -192,45 +192,52 @@ void Tree::RotateRight(Node* parent, Node* child){
 void Tree::RotateRL(Node* parent, Node* child){
     //assumes parent->right points to A, A->right=C, C->left=B; B->left=B-; B->right=B+
     if(child==root){//child is root
-
+        root = child->right->left; //root points to B
+        child->right->left = root->right; //C left points to B+ 
+        root->right = child->right; //B right points to C
+        child->right = root->left; //A right points to B-
+        root->left = child; //B left points to A
     }else if(parent->right==child){
-        parent->right = child->right->left; //parent points to B
-        child->right->left = parent->right; //C left points at B+
+        parent->right = child->right->left; //parent right points to B
+        child->right->left = parent->right->right; //C left points to B+
         parent->right->right = child->right;//B right points to C
         child->right = parent->right->left; //A right points to B-
         parent->right->left = child; //B left points to A
     }else{
     //assumes parent->left points to A, A->right=C, C->left=B; B->left=B-; B->right=B+
-        parent->left = child->right->left; //parent points to B
-        child->right->left = parent->left; //C left points at B-
+        parent->left = child->right->left; //parent left points to B
+        child->right->left = parent->left->right; //C left points to B+
         parent->left->right = child->right;//B right points to C
         child->right = parent->left->left; //A right points to B-
         parent->left->left = child; //B left points to A
 
     }
 }
-/*
+
 void Tree::RotateLR(Node* parent, Node* child){
     //assumes parent->right points to C, C->left=A, A->right=B; B->left=B-; B->right=B+
     if(child==root){//child is root
-
+        root = child->left->right; //parent points to B
+        child->left->right = root->left; //A right points to B-
+        root->left = child->left;//B left points to A
+        child->left = root->right; //C left points to B+
+        root->right = child; //B right points to C
     }else if(parent->right==child){
-        parent->right = child->right->left; //parent points to B
-        child->right->left = parent->right; //C left points at B+
-        parent->right->right = child->right;//B right points to C
-        child->right = parent->right->left; //A right points to B-
-        parent->right->left = child; //B left points to A
+        parent->right = child->left->right; //parent right points to B
+        child->left->right = parent->right->left; //A right points to B-
+        parent->right->left = child->left;//B left points to A
+        child->left = parent->right->right; //C left points to B+
+        parent->right->right = child; //B right points to C
     }else{
     //assumes parent->left points to C, C->left=A, A->right=B; B->left=B-; B->right=B+
-        parent->left = child->right->left; //parent points to B
-        child->right->left = parent->left; //C left points at B-
-        parent->left->right = child->right;//B right points to C
-        child->right = parent->left->left; //A right points to B-
-        parent->left->left = child; //B left points to A
+        parent->left = child->left->right; //parent left points to B
+        child->left->right = parent->left->left; //A right points to B+
+        parent->left->left = child->left;//B left points to A
+        child->left = parent->left->right; //C left points to B+
+        parent->left->right = child; //B left points to C
 
     }
 }
-*/
 int Tree::Levels(Node* parent, Node *child){//counts number of lines below
     if (child==nullptr){
         return 0;
