@@ -3,6 +3,8 @@
 
 #include "file_information.hpp"
 
+#pragma once
+
 // Comments for the functions are replicated in the corresponding `.cpp` file.
 
 /* Function `get_file_lines`:

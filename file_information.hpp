@@ -3,8 +3,6 @@
 #include <string>
 #include <vector>
 
-#define HEADER_FI
-
 #pragma once
 
 // Should order the fields so sized fields appear first for faster read

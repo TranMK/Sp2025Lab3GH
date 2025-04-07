@@ -1,5 +1,7 @@
 #include "Node.cpp"
 
+#pragma once
+
 template <typename T> class Tree {
 private:
   T *root;

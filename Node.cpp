@@ -1,10 +1,15 @@
-#include <utility>
+#include <cstddef>
 
-template <typename T> class Node {
-public:
-  T data;
-  Node *left, *right;
+#include "Node.hpp"
 
-  Node() : data(nullptr), left(nullptr), right(nullptr) {}
-  Node(T data) : data(std::move(data)), left(nullptr), right(nullptr) {}
-};
+template <typename T> auto Node<T>::operator<(Node<T> *other) -> bool {
+  return data < other->data;
+}
+
+template <typename T> auto Node<T>::operator==(Node<T> *other) -> bool {
+  return data == other->data;
+}
+
+template <typename T> auto Node<T>::operator>(Node<T> *other) -> bool {
+  return data > other->data;
+}
