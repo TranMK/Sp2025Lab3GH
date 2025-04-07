@@ -1,3 +1,5 @@
+#include <string>
+
 #include "Node.cpp"
 
 #pragma once
@@ -8,7 +10,7 @@ private:
 
 public:
   Tree() : root(nullptr) {}
-  Tree(char inVal) { root = new Node<T>(inVal); }
+  Tree(std::string inVal) { root = new Node<T>(inVal); }
 
   // Getters.
   auto get_root() -> Node<T> * { return root; };

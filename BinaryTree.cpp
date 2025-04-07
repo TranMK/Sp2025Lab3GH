@@ -94,8 +94,8 @@ template <typename T> auto Tree<T>::Remove(T inVal) -> T {
       root = temp;
     }
   }
-  while ((temp->data > inVal & temp->left->data != inVal) |
-         (temp->data <= inVal & temp->right->data != inVal)) {
+  while ((temp->data > inVal && temp->left->data != inVal) ||
+         (temp->data <= inVal && temp->right->data != inVal)) {
     if (temp->data > inVal) {
       temp = temp->left;
     } else {
@@ -103,12 +103,12 @@ template <typename T> auto Tree<T>::Remove(T inVal) -> T {
     }
   } // Loop until temp is pointing towards parent with value to find in children
   if (inVal < temp->data) { // leaf
-    char outVal = temp->left->data;
+    std::string outVal = temp->left->data;
     delete temp->left;
     temp->left = nullptr;
     return outVal;
   } else {
-    char outVal = temp->right->data;
+    std::string outVal = temp->right->data;
     delete temp->right;
     temp->right = nullptr;
     return outVal;
@@ -117,14 +117,14 @@ template <typename T> auto Tree<T>::Remove(T inVal) -> T {
   if (inVal < temp->data & temp->left->left == nullptr &
       temp->left->right == nullptr) {
     // Remove left leaf
-    char outVal = temp->left->data;
+    std::string outVal = temp->left->data;
     delete temp->left;
     temp->left = nullptr;
     return outVal;
   } else if (temp->data <= inVal & temp->right->left == nullptr &
              temp->right->right == nullptr) {
     // Remove right leaf
-    char outVal = temp->right->data;
+    std::string outVal = temp->right->data;
     delete temp->right;
     temp->right = nullptr;
     return outVal;
@@ -132,7 +132,7 @@ template <typename T> auto Tree<T>::Remove(T inVal) -> T {
   } else if ((temp->data > inVal) &
              (temp->left->left == nullptr | temp->left->right == nullptr)) {
     // Removes the left child
-    char outVal = temp->left->data;
+    std::string outVal = temp->left->data;
     Node<T> *child = temp->left;
     if (child->left != nullptr) {
       temp->left = child->left;
@@ -144,7 +144,7 @@ template <typename T> auto Tree<T>::Remove(T inVal) -> T {
   } else if ((temp->data <= inVal) &
              (temp->right->left == nullptr | temp->right->right == nullptr)) {
     // Removes the right child
-    char outVal = temp->right->data;
+    std::string outVal = temp->right->data;
     Node<T> *child = temp->right;
     if (child->left != nullptr) {
       temp->right = child->left;
@@ -155,16 +155,16 @@ template <typename T> auto Tree<T>::Remove(T inVal) -> T {
     return outVal;
   } else if (temp->data >
              inVal) { // Two children of node, parent on right of child
-    char replace = LeftLargest(temp->left);
+    std::string replace = LeftLargest(temp->left);
     Remove(replace);
-    int retVal = temp->left->data;
+    std::string retVal = temp->left->data;
     temp->left->data = replace;
     return retVal;
   } else if (temp->data <=
              inVal) { // Two children of node, parent on left of child
-    char replace = LeftLargest(temp->right);
+    std::string replace = LeftLargest(temp->right);
     Remove(replace);
-    int retVal = temp->right->data;
+    std::string retVal = temp->right->data;
     temp->right->data = replace;
     return retVal;
   }
@@ -337,4 +337,4 @@ auto Tree<T>::GetAllDescending(Node<T> *parent) -> std::vector<Node<T> *> {
   return nodes;
 }
 
-// template class Tree<std::string>;
+template class Tree<std::string>;
