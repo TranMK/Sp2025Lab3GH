@@ -4,7 +4,7 @@
 #include "BinaryTree.hpp"
 #include "errors.hpp"
 
-template <typename T> void Tree<T>::Insert(char inVal) {
+template <typename T> void Tree<T>::Insert(T inVal) {
   Node<T> *temp = root;
   if (root == nullptr) { // empty
     root = new Node(inVal);
@@ -29,7 +29,7 @@ template <typename T> void Tree<T>::Insert(char inVal) {
   }
 }
 
-template <typename T> auto Tree<T>::Find(char target) -> char {
+template <typename T> auto Tree<T>::Find(T target) -> T {
   if (root == nullptr) {
     throw NotFoundError{};
   }
@@ -81,7 +81,7 @@ template <typename T> void Tree<T>::PrintS(Node<T> *place) {
   std::cout << ")";
 }
 
-template <typename T> auto Tree<T>::Remove(char inVal) -> char {
+template <typename T> auto Tree<T>::Remove(T inVal) -> T {
   Find(inVal); // check if in Tree
   Node<T> *temp = root;
   if (root->data == inVal) {                              // remove root
@@ -169,7 +169,7 @@ template <typename T> auto Tree<T>::Remove(char inVal) -> char {
   }
 }
 
-template <typename T> auto Tree<T>::LeftLargest(Node<T> *parent) -> char {
+template <typename T> auto Tree<T>::LeftLargest(Node<T> *parent) -> T {
   Node<T> *temp = parent->left;
   while (temp->right != nullptr) {
     temp = temp->right;
@@ -329,3 +329,5 @@ auto Tree<T>::GetAllDescending(Node<T> *parent) -> std::vector<Node<T> *> {
 
   return nodes;
 }
+
+// template class Tree<std::string>;

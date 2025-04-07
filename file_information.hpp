@@ -1,7 +1,8 @@
 #include <cctype>
-#include <map>
 #include <string>
 #include <vector>
+
+#include "BinaryTree.hpp"
 
 #pragma once
 
@@ -12,17 +13,15 @@ struct FileInformation {
   std::string author;
   size_t word_count;
   size_t line_count;
-  // A `map` instead of a vector so the relationship between the key and the
-  // value is more apparent. Iteration is also nicer.
-  std::map<char, size_t> letter_frequency;
+  Tree<std::string> word_frequency;
 
-  /* Struct member function `count_letter_frequency`:
+  /* Struct member function `count_word_frequency`:
      Return: none.
 
      Parameters:
      - `vector<string> src` — the lines under "Contents:", i.e., the actual
      text.
-     - `map<char, size_t> map` — the letter frequency stored as a map from
+     - `map<char, size_t> map` — the word frequency stored as a map from
      `char`s to `size_t`s.
 
      Description: First, this function initializes every character in the
@@ -32,20 +31,7 @@ struct FileInformation {
      character using `std::isalpha` — if it is, then we use it as a key in our
      map and add one to its value.
   */
-  void count_letter_frequency(const std::vector<std::string> src);
-
-  /* Struct member function `count_letters`:
-     Return: `size_t` representing the count.
-
-     Parameters: - `map<char, size_t> map` — the letter frequency stored as a
-     map from `char`s to `size_t`s.
-
-     Description: When this function is called, the letter frequency has already
-     been calculated and stored within the struct. All this function has to do
-     is iterate over all its values and sum them, which we do using a standard
-     for loop.
-  */
-  size_t count_letters(std::map<char, size_t> map);
+  void count_word_frequency(const std::vector<std::string> src);
 
   /* Struct member function `count_words`:
      Return: `size_t` representing the count.
@@ -63,6 +49,8 @@ struct FileInformation {
   */
   void count_words(const std::vector<std::string> src);
 
+  auto get_total_words() -> size_t;
+
   /* Struct member function `count_lines`:
      Return: `size_t` representing the count.
 
@@ -76,19 +64,19 @@ struct FileInformation {
   */
   void count_lines(const std::vector<std::string> src);
 
-  /* Struct member function `display_letter_frequency`:
+  /* Struct member function `display_word_frequency`:
      Return: none.
 
      Parameters: none.
 
      Description: Prints out the title of the book, followed by calculating the
-     number of letters present in `src` using the stored letter frequency.
+     number of words present in `src` using the stored word frequency.
      Inside the loop, we iterate through the `(key, value)` pairs in the map and
      access the elements according to their position inside it — `first` and
      `second`. To get the frequency as a percentage, we divide each number of
-     occurences by the total letter count and multiply by 100. Since the number
-     of occurences of each letters and the total number of letters are both
+     occurences by the total word count and multiply by 100. Since the number
+     of occurences of each words and the total number of words are both
      integers, we `static_cast` them for calculations.
   */
-  void display_letter_frequency();
+  void display_word_frequency();
 };

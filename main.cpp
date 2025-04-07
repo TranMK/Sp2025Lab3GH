@@ -28,7 +28,6 @@ auto main() -> int {
     // Do work to fill `FileInformation`.
     fi.count_words(src);
     fi.count_lines(src);
-    fi.count_letter_frequency(src);
 
     save_file_information(fi);
 
@@ -40,7 +39,7 @@ auto main() -> int {
     std::cin >> see_letter_frequency;
     std::cout << std::endl;
     if (see_letter_frequency == 'Y' || see_letter_frequency == 'y') {
-      fi.display_letter_frequency();
+      fi.display_word_frequency();
     }
 
     // Prompt the user to input another file if they wish.
