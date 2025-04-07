@@ -1,5 +1,5 @@
 b:
-	g++ --std=c++2b -g main.cpp BinaryTree.cpp
+	g++ --std=c++2b -g main.cpp BinaryTree.cpp Node.cpp utility.cpp file_information.cpp
 
 r:
-	g++ --std=c++2b -g main.cpp BinaryTree.cpp; ./a.out
+	g++ --std=c++2b -g main.cpp BinaryTree.cpp Node.cpp utility.cpp file_information.cpp; ./a.out
