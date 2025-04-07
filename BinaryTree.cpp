@@ -320,8 +320,8 @@ auto Tree<T>::GetAllAscending(Node<T> *parent) -> std::vector<Node<T> *> {
     }
   }
   for(Node<T> node: nodes){
-    cout<<node->data<<"    "<<Levels(node, node)<<"    "<<Levels(node, node->left)
-      -Levels(node, node->right)<<endl;
+    cout<<node.data<<"    "<<Levels(node, node)<<"    "<<Levels(node, node.left)
+      -Levels(node, node.right)<<endl;
   }
   return nodes;
 }
@@ -331,8 +331,8 @@ auto Tree<T>::GetAllDescending(Node<T> *parent) -> std::vector<Node<T> *> {
   std::vector<Node<T> *> nodes = GetAllAscending(parent);
   std::reverse(nodes.begin(), nodes.end());
   for(Node<T> node: nodes){
-    cout<<node->data<<"    "<<Levels(node, node)<<"    "<<Levels(node, node->left)
-      -Levels(node, node->right)<<endl;
+    cout<<node.data<<"    "<<Levels(node, node)<<"    "<<Levels(node, node.left)
+      -Levels(node, node.right)<<endl;
   }
   return nodes;
 }
