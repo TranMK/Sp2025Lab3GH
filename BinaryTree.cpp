@@ -3,6 +3,7 @@
 
 #include "BinaryTree.hpp"
 #include "errors.hpp"
+using namespace std;
 
 template <typename T> void Tree<T>::Insert(T inVal) {
   Node<T> *temp = root;
@@ -318,7 +319,10 @@ auto Tree<T>::GetAllAscending(Node<T> *parent) -> std::vector<Node<T> *> {
       nodes.push_back(node);
     }
   }
-
+  for(Node<T> node: nodes){
+    cout<<node->data<<"    "<<Levels(node, node)<<"    "<<Levels(node, node->left)
+      -Levels(node, node->right)<<endl;
+  }
   return nodes;
 }
 
@@ -326,7 +330,10 @@ template <typename T>
 auto Tree<T>::GetAllDescending(Node<T> *parent) -> std::vector<Node<T> *> {
   std::vector<Node<T> *> nodes = GetAllAscending(parent);
   std::reverse(nodes.begin(), nodes.end());
-
+  for(Node<T> node: nodes){
+    cout<<node->data<<"    "<<Levels(node, node)<<"    "<<Levels(node, node->left)
+      -Levels(node, node->right)<<endl;
+  }
   return nodes;
 }
 
