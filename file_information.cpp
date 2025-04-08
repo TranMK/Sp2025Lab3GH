@@ -135,7 +135,7 @@ void FileInformation::display_word_frequency() {
   // Using a substring works instead because the string length isn't affected
   // by escape sequences.
   // For carriage returns, see: https://en.wikipedia.org/wiki/Carriage_return.
-  std::cout << title.substr(0, title.length() - 1)
+  std::cout << title.substr(0, title.length())
             << " word frequency:" << std::endl;
 
   size_t total_words = get_total_words();

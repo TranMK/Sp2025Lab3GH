@@ -31,14 +31,14 @@ auto main() -> int {
 
     save_file_information(fi);
 
-    // Allow for the user to display the letter frequency of the file just
+    // Allow for the user to display the word frequency of the file just
     // processed.
     std::cout << std::endl;
-    std::cout << "Would you like to view the letter frequency? (Y/N): ";
-    char see_letter_frequency;
-    std::cin >> see_letter_frequency;
+    std::cout << "Would you like to view the word frequency? (Y/N): ";
+    char see_word_frequency;
+    std::cin >> see_word_frequency;
     std::cout << std::endl;
-    if (see_letter_frequency == 'Y' || see_letter_frequency == 'y') {
+    if (see_word_frequency == 'Y' || see_word_frequency == 'y') {
       fi.display_word_frequency();
     }
 
