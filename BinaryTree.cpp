@@ -200,15 +200,27 @@ template <typename T>
 void Tree<T>::RotateRight(Node<T> *parent, Node<T> *child) {
   if (root == child) { // child is root
     root = child->left;
-    child->left = root->right;
+    if(root->right != nullptr) {
+      child->left = root->right;
+    } else {
+      child->left = nullptr;
+    }
     root->right = child;
   } else if (parent->right == child) {
     parent->right = child->left;
-    child->left = parent->right->right;
-    parent->right->right = child;
+    if (parent->right->right!=nullptr) {
+      child->left = parent->right->right;
+    } else{
+      child->left = nullptr;
+    }
+    parent->right->right=child;
   } else {
     parent->left = child->left;
-    child->left = parent->left->right;
+    if (parent->left->right!=nullptr) {
+      child->left = parent->left->right;
+    } else {
+      child->left = nullptr;
+    }
     parent->left->right = child;
   }
 }
