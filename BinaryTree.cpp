@@ -1,8 +1,10 @@
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 #include "BinaryTree.hpp"
 #include "errors.hpp"
+#include "GetAllStruct.hpp"
 using namespace std;
 
 template <typename T> void Tree<T>::Insert(T inVal) {
@@ -13,7 +15,7 @@ template <typename T> void Tree<T>::Insert(T inVal) {
   }
 
   while ((inVal > temp->data && temp->right != nullptr) ||
-         (inVal <= temp->data && temp->left != nullptr)) {
+         (inVal < temp->data && temp->left != nullptr)) {
     // Wants to go left & can go left, or wants to go right and can go right
     if (inVal > temp->data) {
       temp = temp->right;
@@ -25,9 +27,12 @@ template <typename T> void Tree<T>::Insert(T inVal) {
 
   if (inVal > temp->data) {
     temp->right = new Node(inVal);
-  } else {
+  } else if (inVal < temp->data) {
     temp->left = new Node(inVal);
+  } else {//dupe value
+    temp->count+=1;
   }
+  int balance = Levels(nullptr, root);
 }
 
 template <typename T> auto Tree<T>::Find(T target) -> T {
@@ -218,10 +223,12 @@ void Tree<T>::RotateRight(Node<T> *parent, Node<T> *child) {
     parent->left = child->left;
     if (parent->left->right!=nullptr) {
       child->left = parent->left->right;
+      parent->left->right = child;
     } else {
       child->left = nullptr;
+      parent->left->right = child;
     }
-    parent->left->right = child;
+    
   }
 }
 
@@ -308,13 +315,13 @@ auto Tree<T>::Levels(Node<T> *parent, Node<T> *child)
 }
 
 template <typename T>
-auto Tree<T>::GetAllAscending(Node<T> *parent) -> std::vector<Node<T> *> {
+auto Tree<T>::GetAll(Node<T> *parent) -> std::vector<Node<T> *> {
   if (parent == nullptr)
     return {};
 
   std::vector<Node<T> *> nodes = {};
   // Left subtree.
-  auto left_subtree_nodes = GetAllAscending(parent->left);
+  auto left_subtree_nodes = GetAll(parent->left);
   if (left_subtree_nodes != std::vector<Node<T> *>{}) {
     for (auto node : left_subtree_nodes) {
       nodes.push_back(node);
@@ -325,29 +332,37 @@ auto Tree<T>::GetAllAscending(Node<T> *parent) -> std::vector<Node<T> *> {
   nodes.push_back(parent);
 
   // Right subtree.
-  auto right_subtree_nodes = GetAllAscending(parent->right);
+  auto right_subtree_nodes = GetAll(parent->right);
   if (right_subtree_nodes != std::vector<Node<T> *>{}) {
     for (auto node : right_subtree_nodes) {
       nodes.push_back(node);
     }
   }
-  for (Node<T> *node : nodes) {
-    cout << node->data << "    " << Levels(node, node) << "    "
-         << Levels(node, node->left) - Levels(node, node->right) << endl;
-  }
   return nodes;
 }
-
 template <typename T>
-auto Tree<T>::GetAllDescending(Node<T> *parent) -> std::vector<Node<T> *> {
-  std::vector<Node<T> *> nodes = GetAllAscending(parent);
-  std::reverse(nodes.begin(), nodes.end());
-
-  for (Node<T> *node : nodes) {
-    cout << node->data << "    " << Levels(node, node) << "    "
-         << Levels(node, node->left) - Levels(node, node->right) << endl;
-  }
-  return nodes;
+auto Tree<T>::GetAllAscending() -> std::vector<GetAllStruct<T>*> {
+    std::vector<Node<T> *> inVect = GetAll(this->root);
+    std::vector<GetAllStruct<T>*> outVect;
+    for (auto node : inVect) {
+        outVect.push_back(
+            new GetAllStruct<T>(node, Levels(node, node), Levels(node, node->left) - Levels(node, node->right))
+        );
+        std::cout<<Levels(node, node)<<"  "<<Levels(node, node->left)-Levels(node, node->right)<<std::endl;
+    }
+    return outVect;
 }
-
+template <typename T>
+auto Tree<T>::GetAllDescending() -> std::vector<GetAllStruct<T>*> {
+    std::vector<Node<T> *> inVect = GetAll(this->root);
+    std::reverse(inVect.begin(), inVect.end());
+    std::vector<GetAllStruct<T>*> outVect;
+    for (auto node : inVect) {
+        outVect.push_back(
+            new GetAllStruct<T>(node, Levels(node, node), Levels(node, node->left) - Levels(node, node->right))
+        );
+    }
+    return outVect;
+}
 template class Tree<std::string>;
+template class GetAllStruct<std::string>;

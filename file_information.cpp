@@ -69,6 +69,7 @@ void FileInformation::count_words(const std::vector<std::string> src) {
     while (ss >> word) {
       word_frequency.Insert(word);
     }
+    num_words+=1;
   }
 
   word_count = num_words;
@@ -77,10 +78,10 @@ void FileInformation::count_words(const std::vector<std::string> src) {
 auto FileInformation::get_total_words() -> size_t {
   size_t total_word_count = 0;
 
-  std::vector<Node<std::string> *> all_words =
-      word_frequency.GetAllAscending(word_frequency.get_root());
+  std::vector<GetAllStruct<std::string> *> all_words =
+      word_frequency.GetAllAscending();
   for (auto word : all_words) {
-    total_word_count += word->count;
+    total_word_count += word->Node->count;
   }
 
   return total_word_count;
@@ -139,11 +140,11 @@ void FileInformation::display_word_frequency() {
             << " word frequency:" << std::endl;
 
   size_t total_words = get_total_words();
-  std::vector<Node<std::string> *> words_alphabetical =
-      word_frequency.GetAllAscending(word_frequency.get_root());
+  std::vector<GetAllStruct<std::string> *> words_alphabetical =
+      word_frequency.GetAllAscending();
   for (auto word_node : words_alphabetical) {
-    std::cout << word_node->data << ": "
-              << static_cast<float>(word_node->count) /
+    std::cout << word_node->Node->data << ": "
+              << word_node->Node->count /
                      static_cast<float>(total_words) * 100.
               << "%" << std::endl;
   }

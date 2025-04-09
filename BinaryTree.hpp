@@ -1,7 +1,7 @@
 #include <string>
 
 #include "Node.cpp"
-
+#include "GetAllStruct.hpp"
 #pragma once
 
 template <typename T> class Tree {
@@ -25,8 +25,9 @@ public:
   void Print();
   void PrintS(Node<T> *place);
   auto LeftLargest(Node<T> *parent) -> T;
-  auto GetAllAscending(Node<T> *parent) -> std::vector<Node<T> *>;
-  auto GetAllDescending(Node<T> *parent) -> std::vector<Node<T> *>;
+  auto GetAll(Node<T> *parent) -> std::vector<Node<T> *>;
+  auto GetAllAscending() -> std::vector<GetAllStruct<T> *>;
+  auto GetAllDescending() -> std::vector<GetAllStruct<T> *>;
 
   // Balancing.
   void RotateLeft(Node<T> *parent, Node<T> *child);

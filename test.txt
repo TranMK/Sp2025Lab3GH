@@ -1,24 +1,7 @@
 title text
 
 hello world
+hi world
+goodbye world
 hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
-hello world
+hi world
