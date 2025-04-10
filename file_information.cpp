@@ -38,7 +38,7 @@ void FileInformation::count_word_frequency(const std::vector<std::string> src) {
 
     for (std::string word : words) {
       // `tolower` to avoid case-sensitivity.
-      tree.Insert(word);
+      tree.Insert(tree.get_root(),word);
     }
   }
 
@@ -67,7 +67,7 @@ void FileInformation::count_words(const std::vector<std::string> src) {
     std::stringstream ss(line);
     std::string word;
     while (ss >> word) {
-      word_frequency.Insert(word);
+      word_frequency.Insert(word_frequency.get_root(),word);
     }
     num_words+=1;
   }
@@ -144,7 +144,7 @@ void FileInformation::display_word_frequency() {
       word_frequency.GetAllAscending();
   for (auto word_node : words_alphabetical) {
     std::cout << word_node->Node->data << ": "
-              << word_node->Node->count /
+              << static_cast<float>(word_node->Node->count) /
                      static_cast<float>(total_words) * 100.
               << "%" << std::endl;
   }

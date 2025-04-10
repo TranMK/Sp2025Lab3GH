@@ -10,8 +10,8 @@ public:
   Node<T> *left, *right;
 
   Node() : data(nullptr), left(nullptr), right(nullptr) {}
-  Node(T data) : data(std::move(data)), left(nullptr), right(nullptr) {}
-  Node(Node<T>* inNode) : data(inNode->data), left(inNode->left), right(inNode->right) {}
+  Node(T data) : data(std::move(data)), left(nullptr), right(nullptr), count(1) {}
+  Node(Node<T>* inNode) : data(inNode->data), left(inNode->left), right(inNode->right), count(inNode->count) {}
 
   auto operator<(Node<T> *other) -> bool;
   auto operator==(Node<T> *other) -> bool;

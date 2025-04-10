@@ -1,7 +1,5 @@
 title text
 
-hello world
-hi world
-goodbye world
-hello world
-hi world
+world
+world
+world hello hi

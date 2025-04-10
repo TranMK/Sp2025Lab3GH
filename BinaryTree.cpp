@@ -7,53 +7,36 @@
 #include "GetAllStruct.hpp"
 using namespace std;
 
-template <typename T> void Tree<T>::Insert(T inVal) {
-  Node<T> *temp = root;
-  if (root == nullptr) { // empty
-    root = new Node(inVal);
-    return;
+template <typename T> auto Tree<T>::Insert(Node<T>* node, T inVal)->Node<T>*{
+  if (!root) {//doesn't exist
+    return new Node(inVal);
   }
-
-  while ((inVal > temp->data && temp->right != nullptr) ||
-         (inVal < temp->data && temp->left != nullptr)) {
-    // Wants to go left & can go left, or wants to go right and can go right
-    if (inVal > temp->data) {
-      temp = temp->right;
-    } else {
-      temp = temp->left;
-    }
-    // Which direction to go
+  if(inVal<node->data){//go left
+    node->left=Insert(node->left,inVal);
+    Levels(nullptr, root);
+  }else if(inVal>node->data){//go right
+    node->right=Insert(node->right,inVal);
+    Levels(nullptr, root);
+  }else{//already exists
+    node->count+=1;
   }
-
-  if (inVal > temp->data) {
-    temp->right = new Node(inVal);
-  } else if (inVal < temp->data) {
-    temp->left = new Node(inVal);
-  } else {//dupe value
-    temp->count+=1;
-  }
-  int balance = Levels(nullptr, root);
+  size++;
+  return node;
 }
 
-template <typename T> auto Tree<T>::Find(T target) -> T {
-  if (root == nullptr) {
-    throw NotFoundError{};
-  }
-
-  Node<T> *temp = root;
-  while (temp != nullptr & target != temp->data) {
-    if (target < temp->data) {
-      temp = temp->left;
-    } else {
-      temp = temp->right;
+template <typename T> auto Tree<T>::Find(T target) -> Node<T>* {
+  return FindSub(target, root);
+}
+template <typename T> auto Tree<T>::FindSub(T target, Node<T>* node)->Node<T>*{
+  if(node->data==target||node==nullptr){
+    return node;
+  }else{
+    if(target < node->data){
+      return FindSub(target,node->left);
+    }else{
+      return FindSub(target,node->right);
     }
   }
-
-  if (temp != nullptr) {
-    throw NotFoundError{};
-  }
-
-  return temp->data;
 }
 
 template <typename T> void Tree<T>::Print() { PrintSub(root); }
@@ -86,7 +69,7 @@ template <typename T> void Tree<T>::PrintS(Node<T> *place) {
   }
   std::cout << ")";
 }
-
+/*
 template <typename T> auto Tree<T>::Remove(T inVal) -> T {
   Find(inVal); // check if in Tree
   Node<T> *temp = root;
@@ -160,27 +143,96 @@ template <typename T> auto Tree<T>::Remove(T inVal) -> T {
     return outVal;
   } else if (temp->data >
              inVal) { // Two children of node, parent on right of child
-    std::string replace = LeftLargest(temp->left);
+    std::string replace = LeftLargest(temp->left)->data;
     Remove(replace);
     std::string retVal = temp->left->data;
     temp->left->data = replace;
     return retVal;
   } else if (temp->data <=
              inVal) { // Two children of node, parent on left of child
-    std::string replace = LeftLargest(temp->right);
+    std::string replace = LeftLargest(temp->right)->data;
     Remove(replace);
     std::string retVal = temp->right->data;
     temp->right->data = replace;
     return retVal;
   }
 }
+*/
+template <typename T> auto Tree<T>::Remove(T inVal) -> Node<T>* {
+  //finds the temp1 to delete, finds the temp2 that's the largest on its left, 
+  //assign temp2's value and count to temp1, delete temp2, attach node2's left child(if any) to its parent
+  /*Node<T>* temp1 = Find(inVal);
+  if(temp1->left==nullptr&&temp1->right==nullptr){//remove root
+    Node<T>* retNode = temp1;
+    root=nullptr;
+    return retNode;
+  }
+  Node<T>* temp2 = LeftLargest(temp1);//largest value left of temp1
+  if(temp2->left!=nullptr){//node to replace with has left child
+    //temp1->data=temp2->data;
+    //temp1->count=temp2->count;//transfers count and value
+    Node<T>* loopNode = temp1->left;
+    while(loopNode->right!=temp2||loopNode->right!=nullptr){//either loopNode is temp2's parent, or temp1's child
+      loopNode=loopNode->right;
+    }
+    if(loopNode->right==nullptr){//temp1's child
+      Node<T>* midman = loopNode;
+      midman->data=temp1->data;
+      midman->count=temp1->count;
+      temp1->data=loopNode->data;
+      temp1->count=loopNode->count;
+      loopNode->data=midman->data;
+      
+    }
+    delete temp2;
+    loopNode->right=nullptr;
+  }else{//node to replace has no left child
 
-template <typename T> auto Tree<T>::LeftLargest(Node<T> *parent) -> T {
+  }*/
+  return RemoveSub(inVal,root);
+  size--;
+
+}
+template <typename T> auto Tree<T>::RemoveSub(T inVal, Node<T>* node)->Node<T>*{
+  if(node==nullptr){
+    return node;
+  }
+  if(inVal<node->data){
+    node->left=RemoveSub(inVal,node->left);
+  }else if(inVal>node->data){
+    node->right=RemoveSub(inVal,node->right);
+  }else{
+    if(node->left==nullptr){//has right child
+      Node<T>* temp=node->right;
+      delete node;
+      return temp;
+    }else if(node->right==nullptr){//has left child
+      Node<T>* temp=node->left;
+      delete node;
+      return temp;
+    }else{//2 children
+      Node<T>* LargestLeft = LeftLargest(node);//finds largest node smaller than input node
+      node->data=LargestLeft->data;
+      node->count=LargestLeft->count;
+      node->right=RemoveSub(LargestLeft->data,node->right);
+    }
+  }
+  Levels(nullptr,root);
+  return node;
+}
+template <typename T> void Tree<T>::EmptyTree(Node<T>* node){
+  if(!node) return;
+  EmptyTree(node->left);
+  EmptyTree(node->right);
+  delete node;
+  size=0;
+}
+template <typename T> auto Tree<T>::LeftLargest(Node<T> *parent) -> Node<T> * {
   Node<T> *temp = parent->left;
   while (temp->right != nullptr) {
     temp = temp->right;
   }
-  return temp->data;
+  return temp;
 }
 
 template <typename T>
@@ -194,7 +246,7 @@ void Tree<T>::RotateLeft(Node<T> *parent, Node<T> *child) {
     parent->right = child->right;
     child->right = parent->right->left;
     parent->right->left = child;
-  } else {
+  } else if (parent->left == child) {
     parent->left = child->right;
     child->right = parent->left->left;
     parent->left->left = child;
@@ -219,7 +271,7 @@ void Tree<T>::RotateRight(Node<T> *parent, Node<T> *child) {
       child->left = nullptr;
     }
     parent->right->right=child;
-  } else {
+  } else if (parent->left == child) {
     parent->left = child->left;
     if (parent->left->right!=nullptr) {
       child->left = parent->left->right;
@@ -227,6 +279,7 @@ void Tree<T>::RotateRight(Node<T> *parent, Node<T> *child) {
     } else {
       child->left = nullptr;
       parent->left->right = child;
+      
     }
     
   }
@@ -285,33 +338,31 @@ template <typename T> void Tree<T>::RotateLR(Node<T> *parent, Node<T> *child) {
 }
 
 template <typename T>
-auto Tree<T>::Levels(Node<T> *parent, Node<T> *child)
-    -> int { // counts number of lines below
-  if (child == nullptr) {
-    return 0;
-  }
-
-  int L = Levels(child, child->left);
-  int R = Levels(child, child->right);
-  if (L - R > 1) {
-    if (Levels(child->left, child->left->left) >
-        Levels(child->left, child->left->right)) {
-      RotateRight(parent, child);
-    } else {
-      RotateLR(parent, child);
+auto Tree<T>::Levels(Node<T> *parent, Node<T> *child) -> int {
+    if (child == nullptr) {
+        return 0;
     }
-  } else if (R - L > 1) {
-    if (Levels(child->right, child->right->left) >
-        Levels(child->right, child->right->right)) {
-      RotateLeft(parent, child);
-    } else {
-      RotateRL(parent, child);
-    }
-  }
 
-  if (L > R)
-    return L + 1;
-  return R + 1;
+    int L = Levels(child, child->left);
+    int R = Levels(child, child->right);
+
+    if (L - R > 1) {
+        if (child->left != nullptr && Levels(child->left, child->left->left) >
+                                      Levels(child->left, child->left->right)) {
+            RotateRight(parent, child);
+        } else if (child->left != nullptr) {
+            RotateLR(parent, child);
+        }
+    } else if (R - L > 1) {
+        if (child->right != nullptr && Levels(child->right, child->right->left) >
+                                       Levels(child->right, child->right->right)) {
+            RotateLeft(parent, child);
+        } else if (child->right != nullptr) {
+            RotateRL(parent, child);
+        }
+    }
+
+    return std::max(L, R) + 1;
 }
 
 template <typename T>
@@ -343,10 +394,11 @@ auto Tree<T>::GetAll(Node<T> *parent) -> std::vector<Node<T> *> {
 template <typename T>
 auto Tree<T>::GetAllAscending() -> std::vector<GetAllStruct<T>*> {
     std::vector<Node<T> *> inVect = GetAll(this->root);
-    std::vector<GetAllStruct<T>*> outVect;
+    std::vector<GetAllStruct<T> *> outVect;
     for (auto node : inVect) {
         outVect.push_back(
-            new GetAllStruct<T>(node, Levels(node, node), Levels(node, node->left) - Levels(node, node->right))
+            new GetAllStruct<T>(
+              node, Levels(node, node), Levels(node, node->left) - Levels(node, node->right))
         );
         std::cout<<Levels(node, node)<<"  "<<Levels(node, node->left)-Levels(node, node->right)<<std::endl;
     }
@@ -356,11 +408,13 @@ template <typename T>
 auto Tree<T>::GetAllDescending() -> std::vector<GetAllStruct<T>*> {
     std::vector<Node<T> *> inVect = GetAll(this->root);
     std::reverse(inVect.begin(), inVect.end());
-    std::vector<GetAllStruct<T>*> outVect;
+    std::vector<GetAllStruct<T> *> outVect;
     for (auto node : inVect) {
         outVect.push_back(
-            new GetAllStruct<T>(node, Levels(node, node), Levels(node, node->left) - Levels(node, node->right))
+            new GetAllStruct<T>(
+              node, Levels(node, node), Levels(node, node->left) - Levels(node, node->right))
         );
+        std::cout<<Levels(node, node)<<"  "<<Levels(node, node->left)-Levels(node, node->right)<<std::endl;
     }
     return outVect;
 }
