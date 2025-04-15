@@ -75,8 +75,9 @@ auto get_content_source(std::vector<std::string> file_contents)
     contents_idx = 2;
 
   std::vector<std::string> src;
-  for (int idx = contents_idx + 1; idx < file_contents.size(); idx++) {
-    src.push_back(file_contents[idx]);
+  for (size_t i = contents_idx + 1; i < file_contents.size(); i++) {
+    std::string file_content = file_contents[i];
+    src.push_back(file_content);
   }
 
   return src;

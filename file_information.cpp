@@ -37,8 +37,7 @@ void FileInformation::count_word_frequency(const std::vector<std::string> src) {
     }
 
     for (std::string word : words) {
-      // `tolower` to avoid case-sensitivity.
-      tree.Insert(tree.get_root(),word);
+      tree.Insert(tree.get_root(), word);
     }
   }
 
@@ -61,15 +60,22 @@ void FileInformation::count_word_frequency(const std::vector<std::string> src) {
 */
 void FileInformation::count_words(const std::vector<std::string> src) {
   size_t num_words = 0;
+
   for (std::string line : src) {
     if (line.length() == 0)
       continue;
+
     std::stringstream ss(line);
     std::string word;
     while (ss >> word) {
-      word_frequency.Insert(word_frequency.get_root(),word);
+      if (word_frequency.get_root() == nullptr) {
+        word_frequency = Tree<std::string>(word);
+        continue;
+      }
+      word_frequency.Insert(word_frequency.get_root(), word);
+      num_words += 1;
+      word = "";
     }
-    num_words+=1;
   }
 
   word_count = num_words;

@@ -1,27 +1,27 @@
-#include <string>
-
-#include "Node.cpp"
 #include "GetAllStruct.hpp"
+#include "Node.cpp"
+
 #pragma once
 
 template <typename T> class Tree {
 private:
   Node<T> *root;
   int size;
+
 public:
-  Tree() : root(nullptr) {}
-  Tree(std::string inVal) { root = new Node<T>(inVal); }
+  Tree() : root(nullptr), size(0) {}
+  Tree(T inVal) { root = new Node<T>(inVal); }
 
   // Getters.
   auto get_root() -> Node<T> * { return root; };
 
   // Usual operations.
-  auto Insert(Node<T>* node, T inVal)->Node<T>*;
-  auto Find(T target) -> Node<T>*;
-  auto FindSub(T target, Node<T>* node)->Node<T>*;
-  auto Remove(T inVal) -> Node<T>*;
-  auto RemoveSub(T Inval, Node<T>* node)->Node<T>*;
-  void EmptyTree(Node<T>* node);
+  auto Insert(Node<T> *node, T inVal) -> Node<T> *;
+  auto Find(T target) -> Node<T> *;
+  auto FindSub(T target, Node<T> *node) -> Node<T> *;
+  auto Remove(T inVal) -> Node<T> *;
+  auto RemoveSub(T Inval, Node<T> *node) -> Node<T> *;
+  void EmptyTree(Node<T> *node);
 
   // Other operations.
   void PrintSub(Node<T> *place);
