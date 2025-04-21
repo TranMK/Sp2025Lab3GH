@@ -70,8 +70,31 @@ constexpr void insertion_sort(std::array<int, SIZE> &arr) {
   size_t size = arr.size();
 }
 
+// Logic from the pseudocode listed in
+// https://en.wikipedia.org/wiki/Counting_sort.
 template <size_t SIZE>
-constexpr void counting_sort(std::array<int, SIZE> &arr) {}
+constexpr void counting_sort(std::array<int, SIZE> &arr) {
+  constexpr size_t max_item = std::max(arr);
+  std::array<int, max_item + 1> counts;
+  std::array<int, SIZE> output;
+
+  for (size_t idx = 0; idx < arr.size(); ++idx) {
+    auto j = arr[idx];
+    counts[j] += 1;
+  }
+
+  for (size_t idx = 0; idx < max_item; ++idx) {
+    counts[idx] = counts[idx] + counts[idx - 1];
+  }
+
+  for (size_t idx = arr.size(); idx > 0; --idx) {
+    auto j = arr[idx];
+    counts[j] -= 1;
+    output[counts[j]] = arr[j];
+  }
+
+  return output;
+}
 
 template <size_t SIZE> constexpr void radix_sort(std::array<int, SIZE> &arr) {
   // Passes.
