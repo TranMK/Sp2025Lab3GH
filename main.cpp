@@ -20,6 +20,14 @@ template <size_t SIZE>
 constexpr auto counting_sort(std::array<int, SIZE> &indices,
                              std::array<int, SIZE> &arr)
     -> std::array<int, SIZE>;
+template <size_t SIZE>
+constexpr void merge_sort(std::array<int, SIZE> &arr, int low, int high);
+template <size_t SIZE>
+constexpr void merge(std::array<int, SIZE> &arr, int low, int middle, int high);
+template <size_t SIZE>
+constexpr void quick_sort(std::array<int, SIZE> &arr, int low, int high);
+template <size_t SIZE>
+constexpr auto find_pivot(std::array<int, SIZE> &arr, int low, int high) -> int;
 template <size_t SIZE> constexpr void radix_sort(std::array<int, SIZE> &arr);
 
 // Prepares array for sorting.
@@ -37,6 +45,7 @@ auto main() -> int {
   for (size_t idx = 0; idx < test_indices.size() - 1; ++idx) {
     test_indices[idx] = idx;
   }
+
   auto sorted = counting_sort(test_indices, test_array);
   for (int item : sorted) {
     std::cout << item << std::endl;
@@ -46,24 +55,27 @@ auto main() -> int {
 }
 
 template <size_t SIZE>
-constexpr auto benchmark(std::array<int, SIZE> &arr) -> double {
-  return 0;
+constexpr auto benchmark(/* function pointer */ void(*f),
+                         std::array<int, SIZE> &arr) -> double {
+  auto time_before = std::chrono::high_resolution_clock::now();
+  f(arr); // Sort.
+  auto time_after = std::chrono::high_resolution_clock::now();
+
+  return std::chrono::duration_cast<std::chrono::milliseconds>(time_after -
+                                                               time_before)
+      .count();
 }
 
 // Generates a vector of random integers of size `n` with values in the range
-// [0, 2*n].
+// [0, 2n].
 template <size_t SIZE>
 constexpr auto generate_random_array() -> std::array<int, SIZE> {
-  std::array<int, SIZE> arr; // Size n
-  int max_val = 2 * static_cast<int>(SIZE);
+  std::array<int, SIZE> arr;
+  for (auto &x : arr) {
+    x = random() % (2 * SIZE + 1);
+  };
 
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dist(0, max_val);
-
-  for (auto &x : arr)
-    x = dist(gen);
-  return arr; // Return the generated vector
+  return arr;
 }
 
 template <size_t SIZE> constexpr void bubble_sort(std::array<int, SIZE> &arr) {
@@ -81,7 +93,17 @@ template <size_t SIZE> constexpr void bubble_sort(std::array<int, SIZE> &arr) {
 
 template <size_t SIZE>
 constexpr void insertion_sort(std::array<int, SIZE> &arr) {
-  size_t size = arr.size();
+  int key = 0;
+  int j = 0;
+  for (int i = 0; i < arr.size(); i++) {
+    key = arr[i];
+    j = i - 1;
+    while (j >= 0 && arr[j] > key) {
+      arr[j + 1] = arr[j];
+      j--;
+    }
+    arr[j + 1] = key;
+  }
 }
 
 // Logic from the pseudocode listed in
@@ -108,30 +130,70 @@ constexpr auto counting_sort(std::array<int, SIZE> &indices,
     counts[j] -= 1;
     output[counts[j]] = arr[j];
     indices[counts[j]] = idx;
-    std::cout << "INDEX MOVED FROM " << idx << " TO " << counts[j] << std::endl;
+    // std::cout << "INDEX MOVED FROM " << idx << " TO " << counts[j] <<
+    // std::endl;
   }
 
   return output;
 }
 
-// template <size_t SIZE> constexpr void radix_sort(std::array<int, SIZE> &arr)
-// {
-//   auto pad_left = [](std::string s, size_t length) {
-//     s.insert(s.begin(), length - s.length(), '0');
-//   };
+template <size_t SIZE> constexpr void radix_sort(std::array<int, SIZE> &arr) {
+  // Passes.
+}
 
-//   size_t max_item = std::max(arr);
-//   std::array<int, SIZE> arr_as_string =
-//       std::for_each(arr.begin(), arr.end(), pad_left(max_item));
-//   std::array<int, SIZE> output;
+template <size_t SIZE>
+constexpr void merge_sort(std::array<int, SIZE> &arr, int low, int high) {
+  if (low < high) {
+    int middle = low + floor(high - low) / 2;
+    merge_sort(arr, low, middle);
+    merge_sort(arr, middle + 1, high);
+    merge(arr, low, middle, high);
+  }
+}
 
-//   // Passes.
-//   std::array<size_t, SIZE> index_map;
-//   auto get_digit_as_char = [char](size_t number, size_t position) {
-//     return std::string(number)[1];
-//   };
-//   for (char[] : arr_as_string) {
-//   }
+template <size_t SIZE>
+constexpr void merge(std::array<int, SIZE> &arr, int low, int middle,
+                     int high) {
+  int elements_on_left = middle - low + 1;
+  int elements_on_right = high - middle;
+  std::vector<int> lefthalf(arr.begin() + low, arr.begin() + middle + 1);
+  std::vector<int> righthalf(arr.begin() + middle + 1, arr.begin() + high + 1);
+  int lefthalfindex = 0;
+  int righthalfindex = 0;
+  int k = low;
+  while (lefthalfindex < elements_on_left &&
+         righthalfindex < elements_on_right) {
+    arr[k++] = (lefthalf[lefthalfindex] <= righthalf[righthalfindex])
+                   ? lefthalf[lefthalfindex]
+                   : righthalf[righthalfindex];
+  }
+  while (lefthalfindex < elements_on_left)
+    arr[k++] = lefthalf[lefthalfindex++];
+  while (righthalfindex < elements_on_right)
+    arr[k++] = righthalf[righthalfindex++];
+}
 
-//   return output;
-// }
+template <size_t SIZE>
+constexpr void quick_sort(std::array<int, SIZE> &arr, int low, int high) {
+  if (low < high) {
+    int pivot = find_pivot(arr, low, high); // sorts indices around pivot
+
+    quick_sort(arr, low, pivot - 1);  // sorts left half of pivot
+    quick_sort(arr, pivot + 1, high); // sorts right half of pivot
+  }
+}
+
+template <size_t SIZE>
+constexpr auto find_pivot(std::array<int, SIZE> &arr, int low, int high)
+    -> int {
+  int pivot = arr[high];
+  int index = low - 1; // starts at -1
+  for (int j = low; j < high - 1; j++) {
+    if (arr[j] < pivot) {
+      index++;
+      std::swap(arr[index], arr[j]); // puts smaller value to the left
+    }
+  }
+  std::swap(arr[index + 1], arr[high]); // puts pivot in the middle of the array
+  return index + 1;                     // return pivot's index
+}
