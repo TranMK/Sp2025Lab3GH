@@ -1,11 +1,18 @@
-#include <iostream>
+#include <array>
+#include <chrono>
+#include <cstddef>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
-#include <array>
-#include "linked_list.hpp"
-void bubble_sort(int arr);
-void test(int (&array)[])
-auto main() -> int {
 
+#include "linked_list.hpp"
+
+void bubble_sort(size_t arr);
+template <size_t SIZE, class T> auto test(std::array<T, SIZE> &) -> double;
+
+auto main() -> int { return 0; }
+
+template <size_t SIZE, class T> auto test(std::array<T, SIZE> &arr) -> double {
+  return 0;
 }
