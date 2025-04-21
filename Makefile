@@ -1,5 +1,5 @@
 b:
-	g++ --std=c++2b -g main.cpp BinaryTree.cpp TreeNode.cpp
+	g++ -g --std=c++2b main.cpp linked_list.cpp linked_list_node.cpp
 
 r:
-	g++ --std=c++2b -g main.cpp BinaryTree.cpp TreeNode.cpp; ./a.out
+	g++ -g --std=c++2b main.cpp linked_list.cpp linked_list_node.cpp; ./a.out
