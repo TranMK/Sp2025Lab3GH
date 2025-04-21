@@ -1,5 +1,5 @@
 b:
-	g++ --std=c++2b -g main.cpp BinaryTree.cpp Node.cpp utility.cpp file_information.cpp GetAllStruct.hpp
+	g++ --std=c++2b -g main.cpp BinaryTree.cpp TreeNode.cpp
 
 r:
-	g++ --std=c++2b -g main.cpp BinaryTree.cpp Node.cpp utility.cpp file_information.cpp; ./a.out
+	g++ --std=c++2b -g main.cpp BinaryTree.cpp TreeNode.cpp; ./a.out
