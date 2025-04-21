@@ -13,7 +13,8 @@
 template <size_t SIZE> constexpr void bubble_sort(std::array<int, SIZE> &arr);
 template <size_t SIZE>
 constexpr void insertion_sort(std::array<int, SIZE> &arr);
-template <size_t SIZE> constexpr void merge_sort(std::array<int, SIZE> &arr);
+template <size_t SIZE> constexpr void merge_sort(std::array<int, SIZE> &arr, int l, int r);
+template <size_t SIZE> constexpr void merge(std::array<int, SIZE> &arr, int l, int m, int r);
 template <size_t SIZE> constexpr void quick_sort(std::array<int, SIZE> &arr);
 template <size_t SIZE> constexpr void counting_sort(std::array<int, SIZE> &arr);
 template <size_t SIZE> constexpr void radix_sort(std::array<int, SIZE> &arr);
@@ -67,7 +68,17 @@ template <size_t SIZE> constexpr void bubble_sort(std::array<int, SIZE> &arr) {
 
 template <size_t SIZE>
 constexpr void insertion_sort(std::array<int, SIZE> &arr) {
-  size_t size = arr.size();
+  int key = 0;
+  int j = 0;
+  for(int i = 0; i < arr.size(); i++){
+    key = arr[i];
+    j = i-1;
+    while(j>=0 && arr[j]>key){
+      arr[j+1]=arr[j];
+      j--;
+    }
+    arr[j+1]=key;
+  } 
 }
 
 template <size_t SIZE>
@@ -75,4 +86,25 @@ constexpr void counting_sort(std::array<int, SIZE> &arr) {}
 
 template <size_t SIZE> constexpr void radix_sort(std::array<int, SIZE> &arr) {
   // Passes.
+}
+template <size_t SIZE> constexpr void merge_sort(std::array<int, SIZE>& arr, int l, int r){
+  if(l < r){
+    int m = l + floor(r-l)/2;
+    merge_sort(arr, l, m);
+    merge_sort(arr, m+1, r);
+    merge(arr, l, m, r);
+  }
+}
+template <size_t SIZE> constexpr void merge(std::array<int, SIZE>& arr, int l, int m, int r){
+  int elements_on_left = m - l + 1;
+  int elements_on_right = r - m;
+  std::vector<int> lefthalf(arr.begin()+l, arr.begin()+m+1);
+  std::vector<int> righthalf(arr.begin()+m+1, arr.begin()+r+1);
+  int lefthalfindex = 0;
+  int righthalfindex = 0;
+  int k = l;
+  while(lefthalfindex < elements_on_left && righthalfindex < elements_on_right){
+    arr[k++] = (lefthalf[lefthalfindex]<=righthalf[righthalfindex]) ? lefthalf[lefthalfindex] : righthalf[righthalfindex];
+  }while(lefthalfindex < elements_on_left) arr[k++] = lefthalf[lefthalfindex++];
+  while(righthalfindex < elements_on_right) arr[k++] = righthalf[righthalfindex++];
 }
