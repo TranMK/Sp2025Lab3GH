@@ -13,9 +13,10 @@
 template <size_t SIZE> constexpr void bubble_sort(std::array<int, SIZE> &arr);
 template <size_t SIZE>
 constexpr void insertion_sort(std::array<int, SIZE> &arr);
-template <size_t SIZE> constexpr void merge_sort(std::array<int, SIZE> &arr, int l, int r);
-template <size_t SIZE> constexpr void merge(std::array<int, SIZE> &arr, int l, int m, int r);
-template <size_t SIZE> constexpr void quick_sort(std::array<int, SIZE> &arr);
+template <size_t SIZE> constexpr void merge_sort(std::array<int, SIZE> &arr, int low, int high);
+template <size_t SIZE> constexpr void merge(std::array<int, SIZE> &arr, int low, int middle, int high);
+template <size_t SIZE> constexpr void quick_sort(std::array<int, SIZE> &arr, int low, int high);
+template <size_t SIZE> constexpr int find_pivot(std::array<int, SIZE> &arr, int low, int high);
 template <size_t SIZE> constexpr void counting_sort(std::array<int, SIZE> &arr);
 template <size_t SIZE> constexpr void radix_sort(std::array<int, SIZE> &arr);
 
@@ -110,24 +111,44 @@ constexpr void counting_sort(std::array<int, SIZE> &arr) {
 template <size_t SIZE> constexpr void radix_sort(std::array<int, SIZE> &arr) {
   // Passes.
 }
-template <size_t SIZE> constexpr void merge_sort(std::array<int, SIZE>& arr, int l, int r){
-  if(l < r){
-    int m = l + floor(r-l)/2;
-    merge_sort(arr, l, m);
-    merge_sort(arr, m+1, r);
-    merge(arr, l, m, r);
+template <size_t SIZE> constexpr void merge_sort(std::array<int, SIZE>& arr, int low, int high){
+  if(low < high){
+    int middle = low + floor(high-low)/2;
+    merge_sort(arr, low, middle);
+    merge_sort(arr, middle+1, high);
+    merge(arr, low, middle, high);
   }
 }
-template <size_t SIZE> constexpr void merge(std::array<int, SIZE>& arr, int l, int m, int r){
-  int elements_on_left = m - l + 1;
-  int elements_on_right = r - m;
-  std::vector<int> lefthalf(arr.begin()+l, arr.begin()+m+1);
-  std::vector<int> righthalf(arr.begin()+m+1, arr.begin()+r+1);
+template <size_t SIZE> constexpr void merge(std::array<int, SIZE>& arr, int low, int middle, int high){
+  int elements_on_left = middle - low + 1;
+  int elements_on_right = high - middle;
+  std::vector<int> lefthalf(arr.begin()+low, arr.begin()+middle+1);
+  std::vector<int> righthalf(arr.begin()+middle+1, arr.begin()+high+1);
   int lefthalfindex = 0;
   int righthalfindex = 0;
-  int k = l;
+  int k = low;
   while(lefthalfindex < elements_on_left && righthalfindex < elements_on_right){
     arr[k++] = (lefthalf[lefthalfindex]<=righthalf[righthalfindex]) ? lefthalf[lefthalfindex] : righthalf[righthalfindex];
   }while(lefthalfindex < elements_on_left) arr[k++] = lefthalf[lefthalfindex++];
   while(righthalfindex < elements_on_right) arr[k++] = righthalf[righthalfindex++];
+}
+template <size_t SIZE> constexpr void quick_sort(std::array<int, SIZE> &arr, int low, int high){
+  if(low < high){
+    int pivot = find_pivot(arr, low, high);//sorts indices around pivot
+
+    quick_sort(arr, low, pivot-1);//sorts left half of pivot
+    quick_sort(arr, pivot+1, high);//sorts right half of pivot
+  }
+}
+template <size_t SIZE> constexpr int find_pivot(std::array<int, SIZE> &arr, int low, int high){
+  int pivot = arr[high];
+  int index = low-1;//starts at -1
+  for(int j = low; j < high-1; j++){
+    if(arr[j] < pivot){
+      index++;
+      std::swap(arr[index],arr[j]);//puts smaller value to the left
+    }
+  }
+  std::swap(arr[index+1], arr[high]);//puts pivot in the middle of the array
+  return index+1;//return pivot's index
 }
