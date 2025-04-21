@@ -29,7 +29,8 @@ auto main() -> int {
   return 0;
 }
 
-template <size_t SIZE, class T> auto test(std::array<T, SIZE> &arr) -> double {
+template <size_t SIZE, class T>
+auto benchmark(std::array<T, SIZE> &arr) -> double {
   return 0;
 }
 // Generates a vector of random integers of size `n` with values in the range [0, 2*n].
