@@ -128,7 +128,7 @@ template <size_t SIZE> constexpr void merge(std::array<int, SIZE>& arr, int low,
   int righthalfindex = 0;
   int k = low;
   while(lefthalfindex < elements_on_left && righthalfindex < elements_on_right){
-    arr[k++] = (lefthalf[lefthalfindex]<=righthalf[righthalfindex]) ? lefthalf[lefthalfindex] : righthalf[righthalfindex];
+    arr[k++] = (lefthalf[lefthalfindex]<=righthalf[righthalfindex]) ? lefthalf[lefthalfindex++] : righthalf[righthalfindex++];
   }while(lefthalfindex < elements_on_left) arr[k++] = lefthalf[lefthalfindex++];
   while(righthalfindex < elements_on_right) arr[k++] = righthalf[righthalfindex++];
 }
@@ -143,7 +143,7 @@ template <size_t SIZE> constexpr void quick_sort(std::array<int, SIZE> &arr, int
 template <size_t SIZE> constexpr int find_pivot(std::array<int, SIZE> &arr, int low, int high){
   int pivot = arr[high];
   int index = low-1;//starts at -1
-  for(int j = low; j < high-1; j++){
+  for(int j = low; j < high; j++){
     if(arr[j] < pivot){
       index++;
       std::swap(arr[index],arr[j]);//puts smaller value to the left
